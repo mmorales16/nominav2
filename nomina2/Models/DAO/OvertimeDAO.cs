@@ -65,7 +65,7 @@ namespace nomina2.Models.DAO
                             {
                                 OvertimeDTO overtime = new OvertimeDTO();
                                 overtime.Overtime_id = reader.GetInt32("id_overtime");
-                                overtime.Id = reader.GetInt32("id");
+                                overtime.Id = reader.GetInt32("user_id");
                                 overtime.Overtime_description = reader.GetString("description");
                                 overtime.Type_action = reader.GetString("type_action");
                                 overtime.Overtime_value = reader.GetDecimal("value");

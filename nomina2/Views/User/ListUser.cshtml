@@ -74,6 +74,13 @@
                 <td>
                     <a href="@Url.Action("ListOvertime", "Overtime", new { id = user.Id })" class="btn btn-danger">(+)</a>
                 </td>
+                <td>
+                    <a href="@Url.Action("ListDeductions", "Deductions", new { id = user.Id })" class="btn btn-danger">(-)</a>
+                </td>
+
+                <td>
+                    <a href="@Url.Action("ListUser", "user", new { id = user.Id })" class="btn btn-danger">Pagar</a>
+                </td>
 
             </tr>
         }

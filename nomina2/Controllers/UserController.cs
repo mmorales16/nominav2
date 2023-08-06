@@ -127,14 +127,16 @@ namespace nomina2.Controllers
         }
 
 
-        public ActionResult ListOvertime(int id)
-        {
-            // Obtener la lista de horas extras filtrada por el ID de usuario
-            List<OvertimeDTO> userOvertimes = overtimeRepository.ReadOvertimeByUserId(id);
+       // public ActionResult ListOvertime(int id)
+        //{
+            // Obtener la lista de overtime filtrada por el ID de usuario
+          //  List<OvertimeDTO> userOvertimes = overtimeRepository.ReadOvertimeByUserId(id);
 
             // Pasar la lista filtrada a la vista
-            return View(userOvertimes);
-        }
+
+          //  ViewBag.UserId = id;
+         //   return View(userOvertimes);
+       // }
 
         public ActionResult EditUser2(int id)
         {

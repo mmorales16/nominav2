@@ -226,7 +226,6 @@
     <Content Include="Views\User\DeleteUser.cshtml" />
     <Content Include="Views\Overtime\ListOvertime.cshtml" />
     <Content Include="Views\User\EditUser2.cshtml" />
-    <Content Include="Views\User\ListOvertime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
