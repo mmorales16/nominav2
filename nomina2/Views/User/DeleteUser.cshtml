@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
+    <title>Delete</title>
 </head>
 <body>
 
@@ -32,7 +32,7 @@
         </thead>
     </table>
 
-    @using (Html.BeginForm("Delete", "User", new { id = Model.Id }, FormMethod.Post, new { id = "deleteForm" }))
+    @using (Html.BeginForm("Deleteuser", "User", new { id = Model.Id }, FormMethod.Post, new { id = "deleteForm" }))
     {
         @Html.AntiForgeryToken()
 

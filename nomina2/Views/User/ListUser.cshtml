@@ -1,22 +1,19 @@
 ﻿@model List<nomina2.Models.DTO.UserDTO>
 
 
+
 @{
     ViewBag.Title = "Index";
-
 }
 
-<h2>User List test  </h2>
-
-
-
-
+<h2>User List</h2>
 <a href="@Url.Action("CreateUser","User")" class="btn btn-success">Create</a>
-<a href="@Url.Action("RolesList","User")" class="btn btn-primary">Roles Usuario </a>
+<a href="@Url.Action("RolesList","User")" class="btn btn-primary">Roles Usuario</a>
+<a href="@Url.Action("ListOvertime","Overtime")" class="btn btn-primary">Overtime</a>
+<a href="@Url.Action("Login","User")" class="btn btn-primary">Login</a>
 
 <!-- Agregar un formulario para la búsqueda de usuarios -->
-
-<form method="get" action="@Url.Action("Index", "User")">
+<form method="get" action="@Url.Action("ListUser", "User")">
     <div class="form-group">
         <br />
         <label for="searchKeyword">Search:</label>
@@ -30,7 +27,6 @@
     <thead>
         <tr>
             <th>ID</th>
-
             <th>name</th>
             <th>Last name</th>
             <th>Email</th>
@@ -58,12 +54,10 @@
                 <td>@user.Last_Name</td>
                 <td>@user.Email</td>
                 <td>@user.Telephone_number</td>
-
                 <td>@user.Department_id</td>
                 <td>@user.Password</td>
                 <td>@user.Type_payment</td>
                 <td>@user.Amount_salary</td>
-
                 <td>@user.Role_id</td>
                 <td>@user.State</td>
                 <td>@user.Update_date</td>
@@ -71,13 +65,16 @@
                 <td>@user.Create_date</td>
                 <td>@user.Create_user</td>
                 <td>
-                    <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-success">Editx</a>
-
-
+                    <a href="@Url.Action("EditUser", "User", new { id = user.Id })" class="btn btn-success">EDIT</a>
                 </td>
                 <td>
-                    <a href="@Url.Action("Delete", "User", new { id = user.Id })" class="btn btn-danger"> Delete</a>
+                    <a href="@Url.Action("DeleteUser", "User", new { id = user.Id })" class="btn btn-danger">DEL</a>
                 </td>
+
+                <td>
+                    <a href="@Url.Action("ListOvertime", "Overtime", new { id = user.Id })" class="btn btn-danger">(+)</a>
+                </td>
+
             </tr>
         }
     </tbody>

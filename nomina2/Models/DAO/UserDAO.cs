@@ -215,6 +215,48 @@ namespace nomina2.Models.DAO
             return null;
         }
 
+        public OvertimeDTO GetUser2ById(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT Id, Overtime_description FROM tb_overtime WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                OvertimeDTO overtime = new OvertimeDTO
+                                {
+                                    Id = Convert.ToInt32(reader["Id"]),
+                                    Overtime_description = reader["Overtime_description"].ToString(),
+           
+                                };
+
+                                return overtime;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.GetUserById: " + ex.Message);
+            }
+
+            return null;
+        }
+
+
+
+
         public string UpdateUser(UserDTO user)
         {
             try
@@ -247,6 +289,40 @@ namespace nomina2.Models.DAO
 
             return "Failed";
         }
+
+        public string UpdateUser2(UserDTO user)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string updateQuery = "UPDATE tb_users SET name = @name, email = @email WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@name", user.Name);
+                        command.Parameters.AddWithValue("@email", user.Email);
+                        command.Parameters.AddWithValue("@id", user.Id);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.UpdateUser: " + ex.Message);
+            }
+
+            return "Failed";
+        }
+
 
         public string DeleteUser(int id)
         {

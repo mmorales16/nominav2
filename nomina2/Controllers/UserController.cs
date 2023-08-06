@@ -12,12 +12,16 @@ namespace nomina2.Controllers
     public class UserController : Controller
     {
         private UserDAO userRepository = new UserDAO();
+        private readonly OvertimeDAO overtimeRepository = new OvertimeDAO();
+
         // GET: User
-        public ActionResult Index(string searchKeyword)
+        public ActionResult ListUser(string searchKeyword)
         {
             // Devuelve la vista Index con la lista de usuarios
             return View(userRepository.ReadUsers(searchKeyword));
         }
+
+
 
         public ActionResult RolesList()
         {
@@ -45,7 +49,7 @@ namespace nomina2.Controllers
                 if (result == "Success")
                 {
                     // Redireccionar a la vista "Index" en caso de éxito
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Listuser");
                 }
                 else
                 {
@@ -67,7 +71,6 @@ namespace nomina2.Controllers
         }
 
 
-
         [HttpGet]
         public ActionResult Login()
         {
@@ -86,7 +89,7 @@ namespace nomina2.Controllers
                 if (isValidCredentials)
                 {
                     // Credenciales válidas, permite el acceso (por ejemplo, redirige a la página de inicio)
-                    return RedirectToAction("Index");
+                    return RedirectToAction("ListUser");
                 }
                 else
                 {
@@ -99,7 +102,7 @@ namespace nomina2.Controllers
             return View(user);
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult EditUser(int id)
         {
             try
             {
@@ -113,26 +116,61 @@ namespace nomina2.Controllers
                 else
                 {
                     Console.WriteLine("User not found");
-                    return RedirectToAction("Index");
+                    return RedirectToAction("ListUser");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error getting user: " + ex.Message);
-                return RedirectToAction("Index");
+                return RedirectToAction("ListUser");
             }
         }
 
+
+        public ActionResult ListOvertime(int id)
+        {
+            // Obtener la lista de horas extras filtrada por el ID de usuario
+            List<OvertimeDTO> userOvertimes = overtimeRepository.ReadOvertimeByUserId(id);
+
+            // Pasar la lista filtrada a la vista
+            return View(userOvertimes);
+        }
+
+        public ActionResult EditUser2(int id)
+        {
+            try
+            {
+                // Intenta obtener un usuario específico utilizando el método GetUserById del repositorio UserDAO
+                OvertimeDTO overtime = userRepository.GetUser2ById(id);
+                if (overtime != null)
+                {
+                    // Si el usuario existe, muestra la vista de edición con los detalles del usuario
+                    return View(overtime);
+                }
+                else
+                {
+                    Console.WriteLine("User not found");
+                    return RedirectToAction("ListUser");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error getting user: " + ex.Message);
+                return RedirectToAction("ListUser");
+            }
+        }
+
+
         // POST: User/Edit/
         [HttpPost]
-        public ActionResult Edit(UserDTO user)
+        public ActionResult EditUser(UserDTO user)
         {
             try
             {
                 // Intenta actualizar los detalles del usuario utilizando el método UpdateUser del repositorio UserDAO
                 string result = userRepository.UpdateUser(user);
                 Console.WriteLine("User updated: " + result);
-                return RedirectToAction("Index");
+                return RedirectToAction("ListUser");
             }
             catch (Exception ex)
             {
@@ -141,21 +179,21 @@ namespace nomina2.Controllers
             }
         }
         // GET: User/Delete/
-        public ActionResult Delete(int id)
+        public ActionResult DeleteUser(int id)
         {
             // Obtiene un usuario específico utilizando el método GetUserById del repositorio UserDAO
             UserDTO user = userRepository.GetUserById(id);
             if (user == null)
             {
                 // El usuario no existe, mostrar mensaje de error o redirigir a otra vista
-                return RedirectToAction("Index");
+                return RedirectToAction("ListUser");
             }
 
             return View(user);
         }
         // POST: User/Delete/
         [HttpPost]
-        [ActionName("Delete")]
+        [ActionName("DeleteUser")]
         public ActionResult DeleteConfirmed(int id)
         {
             try
@@ -169,7 +207,7 @@ namespace nomina2.Controllers
                 Console.WriteLine("Error deleting user: " + ex.Message);
             }
             // Redirige a la vista Index después de eliminar el usuario
-            return RedirectToAction("Index");
+            return RedirectToAction("ListUser");
         }
     }
 }
