@@ -1,0 +1,45 @@
+﻿@model List<nomina2.Models.DTO.DeductionDTO>
+
+@{
+    ViewBag.Title = "Deductions List";
+}
+
+<h2>Deductions List for User with ID: @ViewBag.UserId</h2>
+
+<a href="@Url.Action("Create","User")" class="btn btn-success">Create</a>
+<a href="@Url.Action("RolesList","User")" class="btn btn-primary">Roles Usuario </a>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Deductions</th>
+            <th>ID</th>
+            <th>Type Action</th>
+            <th>Descripcion</th>
+            <th>Value</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var deduction in Model)
+        {
+            <tr>
+                <td>@deduction.Deduction_id</td>
+                <td>@deduction.Id</td>
+                <td>@deduction.Deduction_description</td>
+                <td>@deduction.Type_action</td>
+                <td>@deduction.Deduction_value</td>
+                <td>
+                    <a href="@Url.Action("Edit", "User", new { id = deduction.Id })" class="btn btn-success">Edit</a>
+                </td>
+                <td>
+                    <a href="@Url.Action("Delete", "User", new { id = deduction.Id })" class="btn btn-danger"> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
