@@ -230,6 +230,7 @@
     <Content Include="Views\Overtime\ListOvertime.cshtml" />
     <Content Include="Views\User\EditUser2.cshtml" />
     <Content Include="Views\Deduction\ListDeduction.cshtml" />
+    <Content Include="Views\Overtime\CreateOvertime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -82,5 +82,56 @@ namespace nomina2.Models.DAO
             }
             return overtimes;
         }
+
+
+
+
+
+        public string InsertOvertime(OvertimeDTO overtime)
+          
+
+
+        {
+            string response = "Failed";
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string insertOvertimeQuery = "INSERT INTO tb_overtime (user_id, type_action, description, value) VALUES (@userId, @typeAction, @description, @value)";
+
+
+                    using (MySqlCommand overtimeCommand = new MySqlCommand(insertOvertimeQuery, connection))
+
+                    {
+
+                        overtimeCommand.Parameters.AddWithValue("@userId", overtime.Id);
+                        overtimeCommand.Parameters.AddWithValue("@typeAction", overtime.Type_action);
+                        overtimeCommand.Parameters.AddWithValue("@description", overtime.Overtime_description);
+                        overtimeCommand.Parameters.AddWithValue("@value", overtime.Overtime_value); ;
+
+                        int rowsAffected = overtimeCommand.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            response = "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.InsertUser: " + ex.Message);
+            }
+
+            return response;
+        }
+
+
+
+
+
     }
 }
