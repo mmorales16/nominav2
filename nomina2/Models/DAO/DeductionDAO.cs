@@ -47,7 +47,7 @@ namespace nomina2.Models.DAO
 
 
 
-        public List<DeductionDTO> ReadDeductionByUserId(int userId)
+        public List<DeductionDTO> ReadActiveDeductionByUserId(int userId)
         {
             List<DeductionDTO> deductions = new List<DeductionDTO>();
             try
@@ -82,5 +82,92 @@ namespace nomina2.Models.DAO
             }
             return deductions;
         }
+
+
+        public string InsertDeduction(DeductionDTO deduction)
+
+
+
+        {
+            string response = "Failed";
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string insertDeductionQuery = "INSERT INTO tb_deductions (user_id, type_action, description, value, state) VALUES (@userId, @typeAction, @description, @value, 1)";
+
+
+                    using (MySqlCommand deductionCommand = new MySqlCommand(insertDeductionQuery, connection))
+
+                    {
+
+                        deductionCommand.Parameters.AddWithValue("@userId", deduction.Id);
+                        deductionCommand.Parameters.AddWithValue("@typeAction", deduction.Type_action);
+                        deductionCommand.Parameters.AddWithValue("@description", deduction.Deduction_description);
+                        deductionCommand.Parameters.AddWithValue("@value", deduction.Deduction_value); ;
+
+                        int rowsAffected = deductionCommand.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            response = "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.InsertUser: " + ex.Message);
+            }
+
+            return response;
+
+        }
+
+        public DeductionDTO GetDeductionById(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+                                                   //Cambiar de id_deduction a Deduction_id
+                    string selectQuery = "SELECT Deduction_id, Id, Type_action FROM tb_dedutions WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                DeductionDTO deduction = new DeductionDTO
+                                {
+                                    Deduction_id = Convert.ToInt32(reader["Deduction_id"]),
+                                    Id = Convert.ToInt32(reader["Id"]),
+                                    Type_action = reader["Type_action"].ToString()
+                                };
+
+                                return deduction;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DeductionDAO.GetDeductionById: " + ex.Message);
+            }
+
+            return null;
+        }
+
+
+
     }
 }
+

@@ -27,7 +27,6 @@ namespace nomina2.Controllers
             return View(userOvertimes);
         }
 
-
         public ActionResult CreateOvertime(int userId)
         {
             ViewBag.UserId = userId; // Pasar el ID de usuario a la vista

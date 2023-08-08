@@ -1,0 +1,53 @@
+﻿@model nomina2.Models.DTO.OvertimeDTO
+
+@{
+    ViewBag.Title = "Delete Overtime";
+
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+
+    <h2>Delete User</h2>
+
+    <p>Are you sure you want to delete the record??</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Overtime_id</th>
+                <th>Id</th>
+                <th>Type_action</th>
+            </tr>
+            <tr>
+                <td>@Model.Overtime_id</td>
+                <td>@Model.Id</td>                
+                <td>@Model.Type_action</td>
+            </tr>
+        </thead>
+    </table>
+
+    @using (Html.BeginForm("DeleteOvertime", "Overtime", new { id = Model.Overtime_id }, FormMethod.Post, new { id = "deleteForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        @Html.ActionLink("Cancel", "ListOvvertime", null, new { @class = "btn btn-default" })
+    }
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#deleteForm').submit(function () {
+                    return confirm("Are you sure you want to delete the record?");
+                });
+            });
+        </script>
+    }
+</body>
+</html>
