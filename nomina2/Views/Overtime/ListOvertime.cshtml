@@ -31,10 +31,8 @@
                 <td>@overtime.Type_action</td>
                 <td>@overtime.Overtime_value</td>
                 <td>
-                    <a href="@Url.Action("Edit", "User", new { id = overtime.Id })" class="btn btn-success">Edit</a>
-                </td>
-                <td>
-                    <a href="@Url.Action("Delete", "User", new { id = overtime.Id })" class="btn btn-danger"> Delete</a>
+                    <a href="@Url.Action("Edit", "Overtime", new { id = overtime.Id })" class="btn btn-success">Edit</a>
+                    <a href="@Url.Action("DeleteOvertime", "Overtime", new { id = overtime.Overtime_id })" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

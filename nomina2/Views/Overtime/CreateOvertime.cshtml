@@ -1,4 +1,5 @@
 ﻿@model nomina2.Models.DTO.OvertimeDTO
+
 @{
     ViewBag.Title = "Create Overtime";
 }
@@ -20,21 +21,13 @@
             <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
         }
 
-
-        <p>User ID: @ViewBag.UserId</p>
-
-
-
         @using (Html.BeginForm("CreateOvertime", "Overtime", FormMethod.Post, new { @class = "form" }))
-
         {
-
             <!-- Nuevo TextBoxFor para mostrar el valor del userId -->
             <div class="form-group">
                 <label>User ID:</label>
                 @Html.TextBoxFor(model => model.Id, new { @class = "form-control", @readonly = "readonly", Value = ViewBag.UserId })
             </div>
-
 
             <div class="form-group">
                 <label>Description:</label>

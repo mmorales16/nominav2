@@ -18,6 +18,12 @@ namespace nomina2
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "User", action = "ListUser", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "DeleteOvertime",
+                url: "Overtime/DeleteOvertime/{id}",
+                defaults: new { controller = "Overtime", action = "SoftDeleteOvertime", id = UrlParameter.Optional }
+            );
         }
     }
 }
