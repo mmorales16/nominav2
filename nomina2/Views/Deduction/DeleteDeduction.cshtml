@@ -1,7 +1,7 @@
-﻿@model nomina2.Models.DTO.OvertimeDTO
+﻿@model nomina2.Models.DTO.DeductionDTO
 
 @{
-    ViewBag.Title = "Delete Overtime";
+    ViewBag.Title = "Delete Deduction";
 
 }
 <!DOCTYPE html>
@@ -13,31 +13,31 @@
 </head>
 <body>
 
-    <h2>Delete User</h2>
+    <h2>Delete Deduction</h2>
 
     <p>Are you sure you want to delete the record??</p>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Overtime_id</th>
+                <th>Deduction_id</th>
                 <th>Id</th>
                 <th>Type_action</th>
             </tr>
             <tr>
-                <td>@Model.Overtime_id</td>
-                <td>@Model.Id</td>                
+                <td>@Model.Deduction_id</td>
+                <td>@Model.Id</td>
                 <td>@Model.Type_action</td>
             </tr>
         </thead>
     </table>
 
-    @using (Html.BeginForm("DeleteOvertime", "Overtime", new { id = Model.Overtime_id }, FormMethod.Post, new { id = "deleteForm" }))
+    @using (Html.BeginForm("Deletededuction", "Deduction", new { id = Model.Id }, FormMethod.Post, new { id = "deleteForm" }))
     {
         @Html.AntiForgeryToken()
 
         <input type="submit" value="Delete" class="btn btn-danger" />
-        @Html.ActionLink("Cancel", "ListOvvertime", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
     }
 
     @section Scripts {

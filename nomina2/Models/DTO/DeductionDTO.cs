@@ -14,5 +14,10 @@ namespace nomina2.Models.DTO
         public string Create_deduction { get; set; }
         public string Update_deduction { get; set; }
         public int Id { get; set; }
+
+        public static implicit operator bool(DeductionDTO v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

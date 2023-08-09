@@ -97,7 +97,7 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string insertDeductionQuery = "INSERT INTO tb_deductions (user_id, type_action, description, value, state) VALUES (@userId, @typeAction, @description, @value, 1)";
+                    string insertDeductionQuery = "INSERT INTO tb_deductions (user_id, type_action, description, value) VALUES (@userId, @typeAction, @description, @value)";
 
 
                     using (MySqlCommand deductionCommand = new MySqlCommand(insertDeductionQuery, connection))
@@ -107,7 +107,7 @@ namespace nomina2.Models.DAO
                         deductionCommand.Parameters.AddWithValue("@userId", deduction.Id);
                         deductionCommand.Parameters.AddWithValue("@typeAction", deduction.Type_action);
                         deductionCommand.Parameters.AddWithValue("@description", deduction.Deduction_description);
-                        deductionCommand.Parameters.AddWithValue("@value", deduction.Deduction_value); ;
+                        deductionCommand.Parameters.AddWithValue("@value", deduction.Deduction_value); 
 
                         int rowsAffected = deductionCommand.ExecuteNonQuery();
 
@@ -120,7 +120,7 @@ namespace nomina2.Models.DAO
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in UserDAO.InsertUser: " + ex.Message);
+                Console.WriteLine("Error in DeductionDAO.InsertDeduction: " + ex.Message);
             }
 
             return response;
@@ -147,6 +147,7 @@ namespace nomina2.Models.DAO
                             {
                                 DeductionDTO deduction = new DeductionDTO
                                 {
+                                    
                                     Deduction_id = Convert.ToInt32(reader["Deduction_id"]),
                                     Id = Convert.ToInt32(reader["Id"]),
                                     Type_action = reader["Type_action"].ToString()
@@ -164,6 +165,37 @@ namespace nomina2.Models.DAO
             }
 
             return null;
+        }
+
+        public string DeleteDeduction(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string deleteQuery = "DELETE FROM tb_deductions WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(deleteQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DeductionDAO.DeleteDeduction: " + ex.Message);
+            }
+
+            return "Failed";
         }
 
 

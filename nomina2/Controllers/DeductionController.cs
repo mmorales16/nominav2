@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +12,7 @@ using System.Web.Routing;
 
 namespace nomina2.Controllers
 {
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     public class DeductionController : Controller
     {
         private DeductionDAO deductionRepository = new DeductionDAO();
@@ -33,6 +35,7 @@ namespace nomina2.Controllers
 
             return View();
         }
+
 
 
         // POST: User/Create
@@ -66,10 +69,52 @@ namespace nomina2.Controllers
             }
 
             // Devolver la vista "CreateDeduction" con los datos de deduction ingresados previamente y el mensaje de alerta (si corresponde).
+
             return View(deduction);
         }
 
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
+        }
 
+        public DeductionDAO GetDeductionRepository()
+        {
+            return deductionRepository;
+        }
+
+        // GET: Deduction/Delete/
+        public ActionResult DeleteDeduction(int id, DeductionDAO deductionRepository)
+        {
+            // Obtiene un usuario específico utilizando el método GetDeductionById del repositorio DeductionDAO
+            DeductionDTO deduction = deductionRepository.GetDeductionById(id);
+            bool v = deduction;
+            if (v)
+            {
+                // El usuario no existe, mostrar mensaje de error o redirigir a otra vista
+                return RedirectToAction("ListDeduction");
+            }
+
+            return View(deduction);
+        }
+        // POST: User/Delete/
+        [HttpPost]
+        [ActionName("DeleteDeduction")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            try
+            {
+                // Intenta eliminar el usuario utilizando el método DeleteUser del repositorio UserDAO
+                string result = deductionRepository.DeleteDeduction(id);
+                Console.WriteLine("Deduction deleted: " + result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error deleting deduction: " + ex.Message);
+            }
+            // Redirige a la vista Index después de eliminar el usuario
+            return RedirectToAction("ListDeduction");
+        }
 
     }
 }
