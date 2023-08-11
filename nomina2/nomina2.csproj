@@ -234,6 +234,7 @@
     <Content Include="Views\Overtime\DeleteOvertime.cshtml" />
     <Content Include="Views\Deduction\CreateDeduction.cshtml" />
     <Content Include="Views\Deduction\DeleteDeduction.cshtml" />
+    <Content Include="Views\Deduction\UpdateDeduction .cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

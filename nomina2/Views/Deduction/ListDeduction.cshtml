@@ -32,7 +32,7 @@
                 <td>@deduction.Type_action</td>
                 <td>@deduction.Deduction_value</td>
                 <td>
-                    <a href="@Url.Action("Edit", "Deduction", new { id = deduction.Id })" class="btn btn-success">Edit</a>
+                    <a href="@Url.Action("UpdateDeduction", "Deduction", new { id = deduction.Deduction_id })" class="btn btn-success">Edit</a>
                     <a href="@Url.Action("DeleteDeduction", "Deduction", new { id = deduction.Deduction_id })" class="btn btn-danger">Delete</a>
                 </td>
 

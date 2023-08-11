@@ -17,7 +17,7 @@ namespace nomina2.Models.DAO
                 using (MySqlConnection connection = Config.GetConnection())
                 {
                     connection.Open();
-                    string selectQuery = "SELECT * FROM tb_deductions";
+                    string selectQuery = "SELECT * FROM tb_deductions WHERE state = 1";
                     using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
                     {
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -55,7 +55,7 @@ namespace nomina2.Models.DAO
                 using (MySqlConnection connection = Config.GetConnection())
                 {
                     connection.Open();
-                    string selectQuery = "SELECT * FROM tb_deductions WHERE user_id = @userId";
+                    string selectQuery = "SELECT * FROM tb_deductions WHERE user_id = @userId AND state = 1";
                     using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
                     {
                         command.Parameters.AddWithValue("@userId", userId);
@@ -97,7 +97,7 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string insertDeductionQuery = "INSERT INTO tb_deductions (user_id, type_action, description, value) VALUES (@userId, @typeAction, @description, @value)";
+                    string insertDeductionQuery = "INSERT INTO tb_deductions (user_id, type_action, description, value, state) VALUES (@userId, @typeAction, @description, @value, 1)";
 
 
                     using (MySqlCommand deductionCommand = new MySqlCommand(insertDeductionQuery, connection))
@@ -167,7 +167,8 @@ namespace nomina2.Models.DAO
             return null;
         }
 
-        public string DeleteDeduction(int id)
+
+        public string UpdateDeduction(DeductionDTO deduction)
         {
             try
             {
@@ -175,11 +176,15 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string deleteQuery = "DELETE FROM tb_deductions WHERE Id = @id";
+                    string updateQuery = "UPDATE tb_deductions SET (user_id, type_action, description, value, state) VALUES (@userId, @typeAction, @description, @value, 1) WHERE Id = @id";
 
-                    using (MySqlCommand command = new MySqlCommand(deleteQuery, connection))
+                    using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@id", id);
+                        command.Parameters.AddWithValue("@userId", deduction.Id);
+                        command.Parameters.AddWithValue("@typeAction", deduction.Type_action);
+                        command.Parameters.AddWithValue("@description", deduction.Deduction_description);
+                        command.Parameters.AddWithValue("@value", deduction.Deduction_value);
+
 
                         int rowsAffected = command.ExecuteNonQuery();
 
@@ -192,10 +197,34 @@ namespace nomina2.Models.DAO
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in DeductionDAO.DeleteDeduction: " + ex.Message);
+                Console.WriteLine("Error in DeduptionDAO.UpdateDeduction: " + ex.Message);
             }
 
             return "Failed";
+        }
+
+
+        public bool SoftDeleteDeduction(int deductionId)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+                    string softDeleteQuery = "DELETE tb_deductions SET state = 0 WHERE id_deduction = @deductionId";
+                    using (MySqlCommand command = new MySqlCommand(softDeleteQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@deductionId", deductionId);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in nomina2.Models.DAO.DeductionDAO.SoftDeleteDeduction: " + ex.Message);
+                return false;
+            }
         }
 
 

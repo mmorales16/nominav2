@@ -73,6 +73,30 @@ namespace nomina2.Controllers
             return View(deduction);
         }
 
+        public ActionResult EditDeduction(int id)
+        {
+            try
+            {
+                // Intenta obtener un usuario específico utilizando el método GetUserById del repositorio UserDAO
+                DeductionDTO deduction = deductionRepository.GetDeductionById(id);
+                if (deduction != null)
+                {
+                    // Si el usuario existe, muestra la vista de edición con los detalles del usuario
+                    return View(deduction);
+                }
+                else
+                {
+                    Console.WriteLine("Deduction not found");
+                    return RedirectToAction("ListDeduction");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error getting deduction: " + ex.Message);
+                return RedirectToAction("ListDeduction");
+            }
+        }
+
         private string GetDebuggerDisplay()
         {
             return ToString();
@@ -83,38 +107,20 @@ namespace nomina2.Controllers
             return deductionRepository;
         }
 
-        // GET: Deduction/Delete/
-        public ActionResult DeleteDeduction(int id, DeductionDAO deductionRepository)
+        public ActionResult DeleteDedcution(int id)
         {
-            // Obtiene un usuario específico utilizando el método GetDeductionById del repositorio DeductionDAO
-            DeductionDTO deduction = deductionRepository.GetDeductionById(id);
-            bool v = deduction;
-            if (v)
+            bool success = deductionRepository.SoftDeleteDeduction(id);
+            if (success)
             {
-                // El usuario no existe, mostrar mensaje de error o redirigir a otra vista
-                return RedirectToAction("ListDeduction");
+                return RedirectToAction("ListDeduction", new { id = id });
             }
+            else
+            {
+                ViewBag.ErrorMessage = "Error al eliminar el registro.";
+                return View("ListOvertime", deductionRepository.ReadActiveDeductionByUserId(id));
+            }
+        }
 
-            return View(deduction);
-        }
-        // POST: User/Delete/
-        [HttpPost]
-        [ActionName("DeleteDeduction")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            try
-            {
-                // Intenta eliminar el usuario utilizando el método DeleteUser del repositorio UserDAO
-                string result = deductionRepository.DeleteDeduction(id);
-                Console.WriteLine("Deduction deleted: " + result);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error deleting deduction: " + ex.Message);
-            }
-            // Redirige a la vista Index después de eliminar el usuario
-            return RedirectToAction("ListDeduction");
-        }
 
     }
 }
