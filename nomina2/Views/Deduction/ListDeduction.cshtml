@@ -7,8 +7,8 @@
 <h2>Deductions List for User with ID: @ViewBag.UserId</h2>
 
 <a href="@Url.Action("CreateDeduction", "Deduction", new { userId = ViewBag.UserId })" class="btn btn-success">Create</a>
-
 <a href="@Url.Action("RolesList","User")" class="btn btn-primary">Roles Usuario </a>
+
 <br />
 <table class="table">
     <thead>
@@ -32,8 +32,8 @@
                 <td>@deduction.Type_action</td>
                 <td>@deduction.Deduction_value</td>
                 <td>
-                    <a href="@Url.Action("UpdateDeduction", "Deduction", new { id = deduction.Deduction_id })" class="btn btn-success">Edit</a>
-                    <a href="@Url.Action("DeleteDeduction", "Deduction", new { id = deduction.Deduction_id })" class="btn btn-danger">Delete</a>
+                    <a href="@Url.Action("UpdateDeduction", "Deduction", new { id = deduction.Id })" class="btn btn-success">Edit</a>
+                    <a href="@Url.Action("DeleteDeduction", "Deduction", new { id = deduction.Deduction_id, userId = ViewBag.UserId})" class="btn btn-danger">Delete</a>
                 </td>
 
             </tr>

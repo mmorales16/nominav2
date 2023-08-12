@@ -32,12 +32,12 @@
         </thead>
     </table>
 
-    @using (Html.BeginForm("Deletededuction", "Deduction", new { id = Model.Deduction_id }, FormMethod.Post, new { id = "deleteForm" }))
+    @using (Html.BeginForm("DeleteDeduction", "Deduction", new { id = Model.Deduction_id }, FormMethod.Post, new { id = "deleteForm" }))
     {
         @Html.AntiForgeryToken()
 
         <input type="submit" value="Delete" class="btn btn-danger" />
-        @Html.ActionLink("Cancel", "ListDeduction", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Cancel", "DeductionList", null, new { @class = "btn btn-default" })
     }
 
     @section Scripts {

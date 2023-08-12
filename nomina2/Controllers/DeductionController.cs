@@ -12,7 +12,7 @@ using System.Web.Routing;
 
 namespace nomina2.Controllers
 {
-    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
+ 
     public class DeductionController : Controller
     {
         private DeductionDAO deductionRepository = new DeductionDAO();
@@ -77,11 +77,11 @@ namespace nomina2.Controllers
         {
             try
             {
-                // Intenta obtener un usuario específico utilizando el método GetUserById del repositorio UserDAO
+                // Intenta obtener un Deduction específico utilizando el método GetDeductionById del repositorio DeductionDAO
                 DeductionDTO deduction = deductionRepository.GetDeductionById(id);
                 if (deduction != null)
                 {
-                    // Si el usuario existe, muestra la vista de edición con los detalles del usuario
+                    // Si el usuario existe, muestra la vista de edición con los detalles del deduction
                     return View(deduction);
                 }
                 else
@@ -97,27 +97,45 @@ namespace nomina2.Controllers
             }
         }
 
-        private string GetDebuggerDisplay()
+        // POST: Deduction/Edit/
+        [HttpPost]
+        public ActionResult EditDeduction(DeductionDTO deduction)
         {
-            return ToString();
+            try
+            {
+                // Intenta actualizar los detalles del usuario utilizando el método UpdateUser del repositorio UserDAO
+                string result = deductionRepository.UpdateDeduction(deduction);
+                Console.WriteLine("Deduction updated: " + result);
+                return RedirectToAction("ListDedcution");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error updating deduction: " + ex.Message);
+                return View(deduction);
+            }
         }
+
+
 
         public DeductionDAO GetDeductionRepository()
         {
             return deductionRepository;
         }
 
-        public ActionResult DeleteDedcution(int id)
+        public ActionResult DeleteDeduction(int id, int userId)
         {
             bool success = deductionRepository.SoftDeleteDeduction(id);
             if (success)
-            {
-                return RedirectToAction("ListDeduction", new { id = id });
+            { 
+
+                int Id_actual = userId;
+                var routeValues = new RouteValueDictionary(new { id = Id_actual });
+                return RedirectToAction("ListDeduction", routeValues);
             }
             else
             {
                 ViewBag.ErrorMessage = "Error al eliminar el registro.";
-                return View("ListOvertime", deductionRepository.ReadActiveDeductionByUserId(id));
+                return View("ListDeduction", deductionRepository.ReadActiveDeductionByUserId(id));
             }
         }
 
