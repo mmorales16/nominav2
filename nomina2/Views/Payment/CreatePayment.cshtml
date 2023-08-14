@@ -1,0 +1,77 @@
+﻿@model nomina2.Models.DTO.PaymentDTO
+
+@{
+    ViewBag.Title = "Create Payment";
+    decimal amountSalary = ViewBag.AmountSalary;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Payment</title>
+</head>
+<body>
+    <div>
+        <h2>Create Payment</h2>
+
+        <!-- Mostrar el mensaje de alerta genérico en caso de otro error -->
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <br />
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        @using (Html.BeginForm("CreatePayment", "Payment", FormMethod.Post, new { @class = "form" }))
+        {
+            <!-- Nuevo TextBoxFor para mostrar el valor del userId -->
+            <div class="form-group">
+                <label>User ID:</label>
+                @Html.TextBoxFor(model => model.Id, new { @class = "form-control", @readonly = "readonly", Value = ViewBag.UserId })
+            </div>
+
+            <div class="form-group">
+                <label>Amount Salary:</label>
+                @Html.TextBoxFor(model => model.AmountSalary, new { @class = "form-control", @readonly = "readonly", Value = ViewBag.AmountSalary })
+
+            </div>
+
+            <div class="form-group">
+                <label>Date:</label>
+                @Html.TextBoxFor(model => model.Date, new { @class = "form-control", type = "date" }) <!-- Cambio en el tipo -->
+            </div>
+
+
+            <div class="form-group">
+                <label>Type:</label>
+                @Html.TextBoxFor(model => model.Type, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Worked days:</label>
+                @Html.TextBoxFor(model => model.Worked_days, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Regular Hours:</label>
+                @Html.TextBoxFor(model => model.Regular_Hours, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Overtime hours:</label>
+                @Html.TextBoxFor(model => model.Overtime_hours, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Detail:</label>
+                @Html.TextBoxFor(model => model.Detail, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Observation:</label>
+                @Html.TextBoxFor(model => model.Observation, new { @class = "form-control" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        }
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+﻿
+@model List<nomina2.Models.DTO.PaymentDTO>
+
+@{
+    ViewBag.Title = "Payments";
+    string searchKeywordValue = ViewBag.SearchKeyword ?? ""; // Obtén el valor de la búsqueda desde ViewBag
+    decimal amountSalary = Model.Count > 0 ? Model[0].AmountSalary : 0;  // Obtén el valor de AmountSalary del primer elemento en Model
+    ViewBag.AmountSalary = amountSalary;
+}
+
+<h2>Payments List</h2>
+<a href="@Url.Action("CreatePayment", "Payment", new { userId = ViewBag.SearchKeyword, amountSalary = ViewBag.AmountSalary })" class="btn btn-success">Create 3</a>
+
+<form method="get" action="@Url.Action("ListPayment", "Payment")">
+    <div class="form-group">
+        <br />
+        <label for="searchKeyword">Search:</label>
+        <input type="text" class="form-control" name="searchKeyword" placeholder="Enter User ID " style="display: inline-flex; height: 35px; width: 250px; text-align: center; padding: 3px 5px; border: 1px solid #0a93f6; border-radius: 10px;" value="@searchKeywordValue">
+        <button type="submit" class="btn btn-primary" style="display: inline-flex;">Search</button>
+    </div>
+</form>
+<br />
+
+@if (Model != null && Model.Count > 0)
+{
+    <p>User Name: @Model[0].UserName</p>
+    <p>Amount Salary: @Model[0].AmountSalary</p>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id payment</th>
+            <th>Id User</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Worked days</th>
+            <th>Regular Hours</th>
+            <th>Overtime hours</th>
+            <th>Salary</th>
+            <th>Gross Salary</th>
+            <th>Details</th>
+            <th>Observation</th>
+            <th>Update date</th>
+            <th>Update user</th>
+            <th>Create date</th>
+            <th>Create user</th>
+            <th>Name</th>
+            <th>Salary</th>
+            <th>Actions</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count == 0)
+        {
+            <tr>
+                <td colspan="17">No se encontraron registros</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var payment in Model)
+            {
+                <tr>
+                    <td>@payment.Id_payment</td>
+                    <td>@payment.Id</td>
+                    <td>@payment.Date.ToString("dd/MM/yyyy")</td> <!-- Formato fecha -->
+                    <td>@payment.Type</td>
+                    <td>@payment.Worked_days</td>
+                    <td>@payment.Regular_Hours</td>
+                    <td>@payment.Overtime_hours</td>
+                    <td>@payment.Salary.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
+                    <td>@payment.Gross_Salary.ToString("C", new System.Globalization.CultureInfo("es-CR"))</td>
+                    <td>@payment.Detail</td>
+                    <td>@payment.Observation</td>
+                    <td>@payment.Update_date</td>
+                    <td>@payment.Update_user</td>
+                    <td>@payment.Create_date</td>
+                    <td>@payment.Create_user</td>
+                    <td>@payment.UserName</td>
+                    <td>@payment.AmountSalary</td>
+                    <td>
+                        <a href="@Url.Action("EditPayment", "Payment", new { id = payment.Id_payment })" class="btn btn-success">EDIT</a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DeletePayment", "Payment", new { id = payment.Id_payment })" class="btn btn-danger">DEL</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
