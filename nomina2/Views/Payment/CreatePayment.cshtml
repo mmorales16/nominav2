@@ -2,7 +2,10 @@
 
 @{
     ViewBag.Title = "Create Payment";
-    decimal amountSalary = ViewBag.AmountSalary;
+    decimal amountSalary = ViewBag.AmountSalary ?? 0; // Asigna 0 si ViewBag.AmountSalary es nulo
+    decimal department = ViewBag.Department_id ?? 0; // Asigna 0 si ViewBag.AmountSalary es nulo
+
+
 }
 
 <!DOCTYPE html>
@@ -38,27 +41,53 @@
 
             <div class="form-group">
                 <label>Date:</label>
-                @Html.TextBoxFor(model => model.Date, new { @class = "form-control", type = "date" }) <!-- Cambio en el tipo -->
+                @Html.TextBoxFor(model => model.Date, new { @class = "form-control", type = "date", Value = DateTime.Now.ToString("yyyy-MM-dd") })
             </div>
 
 
             <div class="form-group">
                 <label>Type:</label>
-                @Html.TextBoxFor(model => model.Type, new { @class = "form-control" })
+
+
+                @Html.DropDownListFor(model => model.Type, new SelectList(new[] { "J", "A" }), new { @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Worked days:</label>
-                @Html.TextBoxFor(model => model.Worked_days, new { @class = "form-control" })
+                @if (department == 1)
+                {
+                    @Html.TextBoxFor(model => model.Worked_days, new { @class = "form-control", @readonly = "readonly" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.Worked_days, new { @class = "form-control" })
+                }
             </div>
+
 
             <div class="form-group">
                 <label>Regular Hours:</label>
-                @Html.TextBoxFor(model => model.Regular_Hours, new { @class = "form-control" })
+                @if (department != 1)
+                {
+                    @Html.TextBoxFor(model => model.Regular_Hours, new { @class = "form-control", @readonly = "readonly" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.Regular_Hours, new { @class = "form-control" })
+                }
             </div>
             <div class="form-group">
                 <label>Overtime hours:</label>
-                @Html.TextBoxFor(model => model.Overtime_hours, new { @class = "form-control" })
+                @if (department != 1)
+                {
+                    @Html.TextBoxFor(model => model.Overtime_hours, new { @class = "form-control", @readonly = "readonly" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.Overtime_hours, new { @class = "form-control" })
+                }
             </div>
+
+
 
             <div class="form-group">
                 <label>Detail:</label>

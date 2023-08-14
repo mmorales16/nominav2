@@ -1,33 +1,71 @@
-﻿
-@model List<nomina2.Models.DTO.PaymentDTO>
+﻿@model Tuple<List<nomina2.Models.DTO.PaymentDTO>, List<nomina2.Models.DTO.UserDTO>>
+
 
 @{
     ViewBag.Title = "Payments";
-    string searchKeywordValue = ViewBag.SearchKeyword ?? ""; // Obtén el valor de la búsqueda desde ViewBag
-    decimal amountSalary = Model.Count > 0 ? Model[0].AmountSalary : 0;  // Obtén el valor de AmountSalary del primer elemento en Model
+    string searchKeywordValue = ViewBag.SearchKeyword ?? "";
+    decimal amountSalary = Model.Item2.Count > 0 ? Model.Item2[0].Amount_salary : 0;
+    decimal department = Model.Item2.Count > 0 ? Model.Item2[0].Department_id : 0;
+
     ViewBag.AmountSalary = amountSalary;
+    ViewBag.Department_id = department;
 }
 
 <h2>Payments List</h2>
-<a href="@Url.Action("CreatePayment", "Payment", new { userId = ViewBag.SearchKeyword, amountSalary = ViewBag.AmountSalary })" class="btn btn-success">Create 3</a>
 
+<div class="form-group" style="display: inline-flex;">
+    <a href="@Url.Action("CreatePayment", "Payment", new { userId = ViewBag.SearchKeyword, amountSalary = ViewBag.AmountSalary, department = ViewBag.Department_id })" class="btn btn-success">CREATE</a>
+    <a href="@Url.Action("ListUser","User")" class="btn btn-primary">List Users</a>
+</div>
+<br />
+<br />
 <form method="get" action="@Url.Action("ListPayment", "Payment")">
-    <div class="form-group">
-        <br />
-        <label for="searchKeyword">Search:</label>
-        <input type="text" class="form-control" name="searchKeyword" placeholder="Enter User ID " style="display: inline-flex; height: 35px; width: 250px; text-align: center; padding: 3px 5px; border: 1px solid #0a93f6; border-radius: 10px;" value="@searchKeywordValue">
-        <button type="submit" class="btn btn-primary" style="display: inline-flex;">Search</button>
-    </div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>User ID</th>
+                <th>Action</th>
+                <th>Name</th>
+                <th>NLast Name</th>
+                <th>Amount Salary</th>
+                <th>Departament</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> <input type="text" class="form-control" name="searchKeyword" placeholder="Enter User ID" style="display: inline-flex; height: 35px; width: 250px; text-align: center; padding: 3px 5px; border: 1px solid #0a93f6; border-radius: 10px;" value="@searchKeywordValue"></td>
+                <td> <button type="submit" class="btn btn-primary" style="display: inline-flex;">SEARCH</button></td>
+                <td style="padding-right: 10px;">
+                    @if (!string.IsNullOrWhiteSpace(ViewBag.SearchKeyword) && Model.Item2 != null && Model.Item2.Count > 0)
+                    {
+                        @Model.Item2[0].Name
+                    }
+                </td>
+
+                <td style="">
+                    @if (!string.IsNullOrWhiteSpace(ViewBag.SearchKeyword) && Model.Item2 != null && Model.Item2.Count > 0)
+                    {
+                        @Model.Item2[0].Last_Name
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(ViewBag.SearchKeyword) && Model.Item2 != null && Model.Item2.Count > 0)
+                    {
+                        @Model.Item2[0].Amount_salary.ToString("C", new System.Globalization.CultureInfo("es-CR"))
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(ViewBag.SearchKeyword) && Model.Item2 != null && Model.Item2.Count > 0)
+                    {
+                        @Model.Item2[0].Department_id
+                    }
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
 </form>
 <br />
-
-@if (Model != null && Model.Count > 0)
-{
-    <p>User Name: @Model[0].UserName</p>
-    <p>Amount Salary: @Model[0].AmountSalary</p>
-}
-
-
 <table class="table">
     <thead>
         <tr>
@@ -46,14 +84,12 @@
             <th>Update user</th>
             <th>Create date</th>
             <th>Create user</th>
-            <th>Name</th>
-            <th>Salary</th>
             <th>Actions</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @if (Model.Count == 0)
+        @if (Model.Item1.Count == 0)
         {
             <tr>
                 <td colspan="17">No se encontraron registros</td>
@@ -61,7 +97,7 @@
         }
         else
         {
-            foreach (var payment in Model)
+            foreach (var payment in Model.Item1)
             {
                 <tr>
                     <td>@payment.Id_payment</td>
@@ -79,8 +115,6 @@
                     <td>@payment.Update_user</td>
                     <td>@payment.Create_date</td>
                     <td>@payment.Create_user</td>
-                    <td>@payment.UserName</td>
-                    <td>@payment.AmountSalary</td>
                     <td>
                         <a href="@Url.Action("EditPayment", "Payment", new { id = payment.Id_payment })" class="btn btn-success">EDIT</a>
                     </td>

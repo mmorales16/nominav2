@@ -59,6 +59,44 @@ namespace nomina2.Models.DAO
         }
 
 
+        public List<UserDTO> ReadUsers3(string searchKeyword)
+        {
+            List<UserDTO> users = new List<UserDTO>();
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+                    string selectUsersQuery = "SELECT id, name, last_name, amount_salary, department_id FROM tb_users WHERE id LIKE @searchKeyword";
+
+                    using (MySqlCommand commandUsers = new MySqlCommand(selectUsersQuery, connection))
+                    {
+                        commandUsers.Parameters.AddWithValue("@searchKeyword", "%" + searchKeyword + "%");
+
+                        using (MySqlDataReader readerUsers = commandUsers.ExecuteReader())
+                        {
+                            while (readerUsers.Read())
+                            {
+                                UserDTO user = new UserDTO();
+                                user.Id = readerUsers.GetInt32("id");
+                                user.Name = readerUsers.GetString("name");
+                                user.Last_Name = readerUsers.GetString("last_name");
+                                user.Amount_salary = readerUsers.GetDecimal("amount_salary");
+                                user.Department_id = readerUsers.GetInt32("department_id");
+                                users.Add(user); // Agregar el usuario a la lista
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in nomina.Models.DAO.UserDAO.ReadUsers:" + ex.Message);
+            }
+            return users;
+        }
+
+
         public List<Roles> ReadRoles()
         {
             List<Roles> roles = new List<Roles>();
@@ -97,11 +135,8 @@ namespace nomina2.Models.DAO
 
 
         public string InsertUser(UserDTO user)
-
-
         {
             string response = "Failed";
-
             try
             {
                 using (MySqlConnection connection = Config.GetConnection())
@@ -109,7 +144,6 @@ namespace nomina2.Models.DAO
                     connection.Open();
 
                     string insertUserQuery = "INSERT INTO tb_users (name, last_name, email, telephone_number, department_id, password, type_payment, amount_salary, role_id, state, update_date, update_user, create_date, create_user ) VALUES (@name, @last_name, @email, @telephone_number, @department_id, @password, @type_payment, @amount_salary, @role_id, @state, @update_date, @update_user, @create_date, @create_user)";
-
 
                     using (MySqlCommand userCommand = new MySqlCommand(insertUserQuery, connection))
                     {
@@ -175,7 +209,6 @@ namespace nomina2.Models.DAO
         }
 
 
-        //
         public UserDTO GetUserById(int id)
         {
             try
@@ -237,7 +270,7 @@ namespace nomina2.Models.DAO
                                 {
                                     Id = Convert.ToInt32(reader["Id"]),
                                     Overtime_description = reader["Overtime_description"].ToString(),
-           
+
                                 };
 
                                 return overtime;
@@ -255,42 +288,7 @@ namespace nomina2.Models.DAO
         }
 
 
-
-
         public string UpdateUser(UserDTO user)
-        {
-            try
-            {
-                using (MySqlConnection connection = Config.GetConnection())
-                {
-                    connection.Open();
-
-                    string updateQuery = "UPDATE tb_users SET name = @name, email = @email WHERE Id = @id";
-
-                    using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@name", user.Name);
-                        command.Parameters.AddWithValue("@email", user.Email);
-                        command.Parameters.AddWithValue("@id", user.Id);
-
-                        int rowsAffected = command.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
-                        {
-                            return "Success";
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error in UserDAO.UpdateUser: " + ex.Message);
-            }
-
-            return "Failed";
-        }
-
-        public string UpdateUser2(UserDTO user)
         {
             try
             {
@@ -351,12 +349,8 @@ namespace nomina2.Models.DAO
             {
                 Console.WriteLine("Error in UserDAO.DeleteUser: " + ex.Message);
             }
-
             return "Failed";
         }
-
-
-
 
     }
 }

@@ -12,25 +12,33 @@ namespace nomina9.Controllers
     public class PaymentController : Controller
     {
         private PaymentDAO paymentRepository = new PaymentDAO();
+        private UserDAO userRepostiory = new UserDAO();
 
 
 
 
         // GET: Payment
         public ActionResult ListPayment(string searchKeyword)
-
-
         {
             ViewBag.SearchKeyword = searchKeyword; // Guarda el valor en ViewBag
 
-            // Devuelve la vista Index con la lista de Payment
-            return View(paymentRepository.ReadPayments(searchKeyword));
+            // Obtén la lista de pagos y la lista de usuarios
+            List<PaymentDTO> payments = paymentRepository.ReadPayments(searchKeyword);
+            List<UserDTO> users = userRepostiory.ReadUsers3(searchKeyword); // Cambia "userRepostiory" al nombre correcto de tu repositorio de usuarios
+
+            // Crea un modelo compuesto que incluya tanto la lista de pagos como la lista de usuarios
+            var model = new Tuple<List<PaymentDTO>, List<UserDTO>>(payments, users);
+
+            // Devuelve la vista con el modelo compuesto
+            return View(model);
         }
 
-        public ActionResult CreatePayment(int userId, decimal amountSalary)
+
+        public ActionResult CreatePayment(int userId, decimal amountSalary, decimal department)
         {
             ViewBag.UserId = userId; // Pasar el ID de usuario a la vista
             ViewBag.AmountSalary = amountSalary; // Pasar el AmountSalary a la vista
+            ViewBag.Department_id = department; // Pasar el AmountSalary a la vista
 
             return View();
         }
