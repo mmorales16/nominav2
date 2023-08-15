@@ -38,7 +38,7 @@ namespace nomina2.Controllers
 
 
 
-        // POST: User/Create
+        // POST: Deduction/Create
         [HttpPost]
         public ActionResult CreateDeduction(DeductionDTO deduction)
         {
@@ -73,7 +73,7 @@ namespace nomina2.Controllers
             return View(deduction);
         }
 
-        public ActionResult EditDeduction(int id)
+        public ActionResult EditDeduction(int id, int userId3)
         {
             try
             {
@@ -82,36 +82,40 @@ namespace nomina2.Controllers
                 if (deduction != null)
                 {
                     // Si el usuario existe, muestra la vista de edición con los detalles del deduction
-                    return View(deduction);
+                    int Id_actual = userId3;
+                    var routeValues = new RouteValueDictionary(new { id = Id_actual });
+                    return RedirectToAction("ListDeduction", routeValues);
                 }
                 else
                 {
                     Console.WriteLine("Deduction not found");
-                    return RedirectToAction("ListDeduction");
+                    return View("ListDeduction", deductionRepository.ReadActiveDeductionByUserId(id));
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error getting deduction: " + ex.Message);
-                return RedirectToAction("ListDeduction");
+                return View("ListDeduction", deductionRepository.ReadActiveDeductionByUserId(id));
             }
         }
 
         // POST: Deduction/Edit/
         [HttpPost]
-        public ActionResult EditDeduction(DeductionDTO deduction)
+        public ActionResult EditDeduction(DeductionDTO deduction, int userId3)
         {
             try
             {
-                // Intenta actualizar los detalles del usuario utilizando el método UpdateUser del repositorio UserDAO
+                // Intenta actualizar los detalles del Deduction utilizando el método UpdateDeduction del repositorio DeductionDAO
                 string result = deductionRepository.UpdateDeduction(deduction);
                 Console.WriteLine("Deduction updated: " + result);
-                return RedirectToAction("ListDedcution");
+                int Id_actual = userId3;
+                var routeValues = new RouteValueDictionary(new { id = Id_actual });
+                return RedirectToAction("ListDeduction", routeValues);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error updating deduction: " + ex.Message);
-                return View(deduction);
+                return View("ListDeduction", deductionRepository.ReadActiveDeductionByUserId(userId3));
             }
         }
 

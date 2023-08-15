@@ -181,7 +181,7 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string updateQuery = "UPDATE tb_deductions SET type_action = @typeAction, description = @description WHERE Id = @id";
+                    string updateQuery = "UPDATE tb_deductions SET type_action = @typeAction, description = @description, value = @value WHERE Id = @id";
 
                     using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
                     {
@@ -202,7 +202,7 @@ namespace nomina2.Models.DAO
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in DeduptionDAO.UpdateDeduction: " + ex.Message);
+                Console.WriteLine("Error in DeductionDAO.UpdateDeduction: " + ex.Message);
             }
 
             return "Failed";
