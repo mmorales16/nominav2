@@ -1,0 +1,91 @@
+﻿@model nomina2.Models.DTO.PaymentDTO
+
+@{
+    ViewBag.Title = "Edit Payment";
+    decimal amountSalary = ViewBag.AmountSalary ?? 0; // Asigna 0 si ViewBag.AmountSalary es nulo
+    decimal department = ViewBag.Department_id ?? 0; // Asigna 0 si ViewBag.AmountSalary es nulo
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit Payment</title>
+</head>
+<body>
+    <div>
+        <h2>Edit Payment</h2>
+
+        <!-- Mostrar el mensaje de alerta genérico en caso de otro error -->
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <br />
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        @using (Html.BeginForm("EditPayment", "Payment", FormMethod.Post, new { @class = "form" }))
+        {
+            @Html.HiddenFor(model => model.Id_payment) <!-- Agrega un campo oculto para el Id -->
+            @Html.HiddenFor(model => model.Id_user) <!-- Agrega un campo oculto para el Id -->
+
+            <div class="form-group">
+                <label>Id payment:</label>
+                @Html.DisplayFor(model => model.Id_payment) <!-- Mostrar el Id -->
+            </div>
+
+            <div class="form-group">
+                <label>Id user:</label>
+                @Html.DisplayFor(model => model.Id_user) <!-- Mostrar el Id -->
+            </div>
+
+            <div class="form-group">
+                <label>Amount Salary:</label>
+                @Html.EditorFor(model => model.AmountSalary, new { @class = "form-control", Value = ViewBag.AmountSalary })
+            </div>
+
+            <div class="form-group">
+                <label>Date:</label>
+                @Html.EditorFor(model => model.Date, new { @class = "form-control", type = "date" })
+            </div>
+
+            <div class="form-group">
+                <label>Type:</label>
+                @Html.EditorFor(model => model.Type, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Worked days:</label>
+                @Html.EditorFor(model => model.Worked_days, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Regular Hours:</label>
+                @Html.EditorFor(model => model.Regular_Hours, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Overtime hours:</label>
+                @Html.EditorFor(model => model.Overtime_hours, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Gross Salary:</label>
+                @Html.EditorFor(model => model.Gross_Salary, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Detail:</label>
+                @Html.EditorFor(model => model.Detail, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Observation:</label>
+                @Html.EditorFor(model => model.Observation, new { @class = "form-control" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        }
+    </div>
+</body>
+</html>
