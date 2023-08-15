@@ -101,7 +101,7 @@
             {
                 <tr>
                     <td>@payment.Id_payment</td>
-                    <td>@payment.Id</td>
+                    <td>@payment.Id_user</td>
                     <td>@payment.Date.ToString("dd/MM/yyyy")</td> <!-- Formato fecha -->
                     <td>@payment.Type</td>
                     <td>@payment.Worked_days</td>
@@ -116,10 +116,10 @@
                     <td>@payment.Create_date</td>
                     <td>@payment.Create_user</td>
                     <td>
-                        <a href="@Url.Action("EditPayment", "Payment", new { id = payment.Id_payment })" class="btn btn-success">EDIT</a>
+                        <a href="@Url.Action("EditPayment", "Payment", new { id = payment.Id_payment, userId = ViewBag.SearchKeyword, amountSalary = ViewBag.AmountSalary, department = ViewBag.Department_id })" class="btn btn-success">EDIT</a>
                     </td>
                     <td>
-                        <a href="@Url.Action("DeletePayment", "Payment", new { id = payment.Id_payment })" class="btn btn-danger">DEL</a>
+                        <a href="@Url.Action("DeletePayment", "Payment", new { id = payment.Id_payment, userId = ViewBag.SearchKeyword  })" class="btn btn-danger">DEL</a>
                     </td>
                 </tr>
             }

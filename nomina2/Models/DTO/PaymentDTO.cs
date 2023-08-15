@@ -9,7 +9,7 @@ namespace nomina2.Models.DTO
     public class PaymentDTO
     {
         public int Id_payment { get; set; }
-        public int Id { get; set; }
+        public int Id_user { get; set; }
         public decimal Salary { get; set; }
         public DateTime Date { get; set; }
         public string Type { get; set; }

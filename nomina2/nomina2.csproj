@@ -239,6 +239,8 @@
     <Content Include="Views\Deduction\UpdateDeduction .cshtml" />
     <Content Include="Views\Payment\CreatePayment.cshtml" />
     <Content Include="Views\Payment\ListPayment.cshtml" />
+    <Content Include="Views\Payment\EditPayment.cshtml" />
+    <Content Include="Views\Payment\DeletePayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -29,7 +29,8 @@ namespace nomina2.Models.DAO
                     {
                         if (!string.IsNullOrWhiteSpace(searchKeyword))
                         {
-                            command.Parameters.AddWithValue("@searchKeyword", "%" + searchKeyword + "%");
+                            command.Parameters.AddWithValue("@searchKeyword", searchKeyword);
+
 
                         }
 
@@ -39,7 +40,7 @@ namespace nomina2.Models.DAO
                             {
                                 PaymentDTO payment = new PaymentDTO();
                                 payment.Id_payment = readerPayments.GetInt32("id_payment");
-                                payment.Id = readerPayments.GetInt32("user_id");
+                                payment.Id_user = readerPayments.GetInt32("user_id");
                                 payment.Salary = readerPayments.GetDecimal("salary");
                                 payment.Date = readerPayments.GetDateTime("date").Date; // Obtener solo fecha
                                 payment.Type = readerPayments.GetString("type");
@@ -91,7 +92,7 @@ namespace nomina2.Models.DAO
 
                     {
 
-                        paymentCommand.Parameters.AddWithValue("@userId", payment.Id);
+                        paymentCommand.Parameters.AddWithValue("@userId", payment.Id_user);
                         paymentCommand.Parameters.AddWithValue("@salary", payment.AmountSalary);
                         paymentCommand.Parameters.AddWithValue("@date", payment.Date);
                         paymentCommand.Parameters.AddWithValue("@type", payment.Type);
@@ -169,6 +170,154 @@ namespace nomina2.Models.DAO
 
             return response;
 
+        }
+
+
+        public PaymentDTO GetPaymentById(int id_payment)
+        {
+            PaymentDTO payment = null;
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string getPaymentQuery = "SELECT * FROM tb_payments WHERE id_payment = @id_payment";
+
+                    using (MySqlCommand paymentCommand = new MySqlCommand(getPaymentQuery, connection))
+                    {
+                        paymentCommand.Parameters.AddWithValue("@id_payment", id_payment);
+
+                        using (MySqlDataReader reader = paymentCommand.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                payment = new PaymentDTO
+                                {
+                                    Id_payment = Convert.ToInt32(reader["id_payment"]),
+                                    Id_user = Convert.ToInt32(reader["user_id"]),
+                                    AmountSalary = Convert.ToDecimal(reader["salary"]),
+                                    Date = Convert.ToDateTime(reader["date"]),
+                                    Type = Convert.ToString(reader["type"]),
+                                    Worked_days = Convert.ToInt32(reader["worked_days"]),
+                                    Regular_Hours = Convert.ToInt32(reader["regular_hours"]),
+                                    Overtime_hours = Convert.ToInt32(reader["overtime_hours"]),
+                                    Gross_Salary = Convert.ToInt32(reader["gross_salary"]),
+                                    Detail = Convert.ToString(reader["detail"]),
+                                    Observation = Convert.ToString(reader["observation"]),
+                                    Update_date = Convert.ToDateTime(reader["update_date"]),
+                                    Update_user = Convert.ToString(reader["update_user"]),
+                                    Create_date = Convert.ToDateTime(reader["create_date"]),
+                                    Create_user = Convert.ToString(reader["create_user"])
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in PaymentDAO.GetPaymentById: " + ex.Message);
+            }
+
+            return payment;
+        }
+
+
+        public string UpdatePayment(PaymentDTO payment)
+        {
+            string response = "Failed";
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string updatePaymentQuery = "UPDATE tb_payments SET salary = @salary, date = @date, type = @type, worked_days = @worked_days, regular_hours = @regular_hours, overtime_hours = @overtime_hours, gross_salary = @gross_salary, update_date = @update_date, update_user = @update_user  WHERE id_payment = @id_payment";
+
+                    using (MySqlCommand paymentCommand = new MySqlCommand(updatePaymentQuery, connection))
+                    {
+
+
+                        paymentCommand.Parameters.AddWithValue("@salary", payment.AmountSalary);
+                        paymentCommand.Parameters.AddWithValue("@date", payment.Date);
+                        paymentCommand.Parameters.AddWithValue("@type", payment.Type);
+                        paymentCommand.Parameters.AddWithValue("@worked_days", payment.Worked_days);
+                        paymentCommand.Parameters.AddWithValue("@regular_hours", payment.Regular_Hours);
+                        paymentCommand.Parameters.AddWithValue("@overtime_hours", payment.Overtime_hours);
+
+                        // Calcula el valor de regularGross multiplicando Regular_Hours por AmountSalary
+                        decimal regularGrossx = payment.Regular_Hours * payment.AmountSalary;
+
+                        // Calcula el valor de overtimeGross multiplicando Overtime_hours por AmountSalary y luego por 1.5
+                        decimal overtimeGrossx = payment.Overtime_hours * payment.AmountSalary * 1.5M;
+
+                        // Calcula el valor de workedDaysGross multiplicando Worked_days por AmountSalary
+                        decimal workedDaysGrossx = payment.Worked_days * payment.AmountSalary / 22M;
+
+                        // Calcula el valor total de grossSalary sumando regularGross, overtimeGross y workedDaysGross
+                        decimal grossSalary = regularGrossx + overtimeGrossx + workedDaysGrossx;
+                        if (payment.Type == "A")
+                        {
+                            grossSalary = 0;
+                        }
+                        paymentCommand.Parameters.AddWithValue("@gross_salary", grossSalary);
+                        paymentCommand.Parameters.AddWithValue("@update_date", DateTime.Now);
+                        paymentCommand.Parameters.AddWithValue("@update_user", string.IsNullOrEmpty(payment.Update_user) ? "MMORALES" : payment.Update_user);
+                        paymentCommand.Parameters.AddWithValue("@id_payment", payment.Id_payment);
+
+
+                        int rowsAffected = paymentCommand.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            response = "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in PaymentDAO.UpdatePayment: " + ex.Message);
+            }
+
+            return response;
+        }
+
+
+        public string DeletePayment(int id_payment)
+        {
+            string response = "Failed";
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string deletePaymentQuery = "DELETE FROM tb_payments WHERE id_payment = @id_payment";
+
+                    using (MySqlCommand paymentCommand = new MySqlCommand(deletePaymentQuery, connection))
+                    {
+                        paymentCommand.Parameters.AddWithValue("@id_payment", id_payment);
+
+                        int rowsAffected = paymentCommand.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            response = "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in PaymentDAO.DeletePayment: " + ex.Message);
+            }
+
+            return response;
         }
 
 
