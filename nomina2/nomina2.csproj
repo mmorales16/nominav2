@@ -182,6 +182,7 @@
     <Compile Include="Models\DAO\PaymentDAO.cs" />
     <Compile Include="Models\DAO\UserDAO.cs" />
     <Compile Include="Models\DTO\DeductionDTO.cs" />
+    <Compile Include="Models\DTO\DepartamentDTO.cs" />
     <Compile Include="Models\DTO\OvertimeDTO.cs" />
     <Compile Include="Models\DTO\PaymentDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />
@@ -193,6 +194,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Icono.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -241,6 +243,7 @@
     <Content Include="Views\Payment\ListPayment.cshtml" />
     <Content Include="Views\Payment\EditPayment.cshtml" />
     <Content Include="Views\Payment\DeletePayment.cshtml" />
+    <Content Include="Views\User\ListDepartament.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

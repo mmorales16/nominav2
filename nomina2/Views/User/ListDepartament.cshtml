@@ -1,0 +1,36 @@
+﻿@model List<nomina2.Models.DTO.DepartamentDTO>
+
+@{
+    ViewBag.Title = "Departament List";
+}
+
+<h2>Departament List</h2>
+
+<a href="@Url.Action("CreateDepartament", "User")" class="btn btn-success">Create</a>
+<a href="@Url.Action("RolesList", "User")" class="btn btn-primary">Roles Usuario</a>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var departament in Model)
+        {
+            <tr>
+                <td>@departament.Id_departament</td>
+                <td>@departament.Description</td>
+                <td>
+                    <a href="@Url.Action("EditDepartament", "User", new { id = departament.Id_departament })" class="btn btn-success">Edit</a>
+                </td>
+                <td>
+                    <a href="@Url.Action("DeleteDepartament", "User", new { id = departament.Id_departament })" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

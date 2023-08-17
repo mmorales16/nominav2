@@ -133,6 +133,43 @@ namespace nomina2.Models.DAO
             return roles;
         }
 
+        public List<DepartamentDTO> ReadDepartament()
+        {
+            List<DepartamentDTO> departaments = new List<DepartamentDTO>();
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT * FROM tb_departaments";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                DepartamentDTO departament = new DepartamentDTO
+                                {
+                                    Id_departament = Convert.ToInt32(reader["id_departament"]),
+                                    Description = Convert.ToString(reader["description"])
+                                };
+                                departaments.Add(departament);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.ReadDepartament: " + ex.Message);
+            }
+
+            return departaments;
+        }
+
 
         public string InsertUser(UserDTO user)
         {
@@ -155,7 +192,20 @@ namespace nomina2.Models.DAO
                         userCommand.Parameters.AddWithValue("@password", user.Password);
                         userCommand.Parameters.AddWithValue("@type_payment", string.IsNullOrEmpty(user.Type_payment) ? "" : user.Type_payment);
                         userCommand.Parameters.AddWithValue("@amount_salary", user.Amount_salary);
-                        userCommand.Parameters.AddWithValue("@role_id", user.Role_id);
+
+
+
+                        // Verificar si role_id es 0, y asignar 0 si es así
+                        if (user.Role_id == 0)
+                        {
+                            userCommand.Parameters.AddWithValue("@role_id", 0);
+                        }
+                        else
+                        {
+                            userCommand.Parameters.AddWithValue("@role_id", user.Role_id);
+                        }
+
+
                         // Asignar el valor fijo "active" al parámetro @state
                         userCommand.Parameters.AddWithValue("@state", "active");
                         userCommand.Parameters.AddWithValue("@update_date", user.Update_date);

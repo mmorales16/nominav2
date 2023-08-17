@@ -30,46 +30,68 @@ namespace nomina2.Controllers
             return View(userRepository.ReadRoles());
         }
 
+        public ActionResult ListDepartament()
+        {
+            // Devuelve la vista Index con la lista de usuarios
+            return View(userRepository.ReadDepartament());
+        }
+
         public ActionResult CreateUser()
         {
             // Obtener los roles disponibles
             var roles = userRepository.ReadRoles().ToList();
+            var departaments = userRepository.ReadDepartament().ToList();
             ViewBag.Roles = new SelectList(roles, "id", "Description");
+            ViewBag.Departaments = new SelectList(departaments, "id_departament", "Description");
+
             return View();
         }
 
 
-        // POST: User/Create
         [HttpPost]
         public ActionResult CreateUser(UserDTO user)
         {
             try
             {
-                string result = userRepository.InsertUser(user);
+                if (ModelState.IsValid)
+                {
+                    if (user.Password == user.ConfirmPassword)
+                    {
+                        string result = userRepository.InsertUser(user);
 
-                if (result == "Success")
-                {
-                    // Redireccionar a la vista "Index" en caso de éxito
-                    return RedirectToAction("Listuser");
+                        if (result == "Success")
+                        {
+                            // Redireccionar a la vista "Index" en caso de éxito
+                            return RedirectToAction("Login");
+                        }
+                        else
+                        {
+                            // Si la inserción falla, agregar un mensaje de alerta a la ViewBag
+                            ViewBag.ErrorMessage = "Error al insertar el usuario en la base de datos.";
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+                    }
                 }
-                else
-                {
-                    // Si la inserción falla, agregar un mensaje de alerta a la ViewBag
-                    ViewBag.ErrorMessage = "Error al insertar el usuario en la base de datos.";
-                }
+
+                // Si la validación falla, recuperar las listas de roles y departamentos
+                var roles = userRepository.ReadRoles().ToList();
+                var departaments = userRepository.ReadDepartament().ToList();
+                ViewBag.Roles = new SelectList(roles, "id", "Description");
+                ViewBag.Departaments = new SelectList(departaments, "id_departament", "Description");
+
+                return View(user);
             }
             catch (Exception ex)
             {
                 // En caso de excepción, agregar un mensaje de alerta a la ViewBag
                 ViewBag.ErrorMessage = "Ocurrió un error durante la inserción del usuario: " + ex.Message;
+                return View(user);
             }
-
-            // Devolver la vista "CreateUser" con los datos del usuario ingresados previamente
-            // y el mensaje de alerta (si corresponde).
-            var roles = userRepository.ReadRoles().ToList();
-            ViewBag.Roles = new SelectList(roles, "id", "Description");
-            return View(user);
         }
+
 
 
         [HttpGet]
@@ -82,22 +104,21 @@ namespace nomina2.Controllers
         [HttpPost]
         public ActionResult Login(UserDTO user)
         {
-            if (ModelState.IsValid)
-            {
+            
                 UserDAO userDAO = new UserDAO();
                 bool isValidCredentials = userDAO.ValidateUser(user.Email, user.Password);
 
                 if (isValidCredentials)
                 {
-                    // Credenciales válidas, permite el acceso (por ejemplo, redirige a la página de inicio)
-                    return RedirectToAction("ListUser");
-                }
+                // Credenciales válidas, permite el acceso (por ejemplo, redirige a la página de inicio)
+                    return RedirectToAction("Index", "Home");
+            }
                 else
                 {
                     // Credenciales inválidas, muestra mensaje de error
                     ViewBag.ErrorMessage = "Incorrect credentials, check the email and password";
                 }
-            }
+            
 
             // Si el modelo no es válido o las credenciales son inválidas, vuelve a mostrar la vista de inicio de sesión con los errores
             return View(user);
@@ -126,18 +147,6 @@ namespace nomina2.Controllers
                 return RedirectToAction("ListUser");
             }
         }
-
-
-       // public ActionResult ListOvertime(int id)
-        //{
-            // Obtener la lista de overtime filtrada por el ID de usuario
-          //  List<OvertimeDTO> userOvertimes = overtimeRepository.ReadOvertimeByUserId(id);
-
-            // Pasar la lista filtrada a la vista
-
-          //  ViewBag.UserId = id;
-         //   return View(userOvertimes);
-       // }
 
         public ActionResult EditUser2(int id)
         {
@@ -213,4 +222,5 @@ namespace nomina2.Controllers
             return RedirectToAction("ListUser");
         }
     }
+
 }

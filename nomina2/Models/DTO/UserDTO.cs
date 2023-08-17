@@ -17,6 +17,10 @@ namespace nomina2.Models.DTO
         public string Telephone_number { get; set; }
         public int Department_id { get; set; }
         public string Password { get; set; }
+        [Required(ErrorMessage = "Please confirm the password")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        [Display(Name = "Confirm Password")]
+        public string ConfirmPassword { get; set; }
         public string Type_payment { get; set; }
         public decimal Amount_salary { get; set; }
         public int Role_id { get; set; }
