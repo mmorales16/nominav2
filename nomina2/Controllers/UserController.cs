@@ -22,6 +22,13 @@ namespace nomina2.Controllers
             return View(userRepository.ReadUsers(searchKeyword));
         }
 
+        public ActionResult ListUserSecurity(string searchKeyword)
+        {
+            // Devuelve la vista Index con la lista de usuarios
+            return View(userRepository.ReadUsers(searchKeyword));
+        }
+
+
 
 
         public ActionResult RolesList()
@@ -104,25 +111,39 @@ namespace nomina2.Controllers
         [HttpPost]
         public ActionResult Login(UserDTO user)
         {
-            
-                UserDAO userDAO = new UserDAO();
-                bool isValidCredentials = userDAO.ValidateUser(user.Email, user.Password);
 
-                if (isValidCredentials)
-                {
+            UserDAO userDAO = new UserDAO();
+            bool isValidCredentials = userDAO.ValidateUser(user.Email, user.Password);
+
+            if (isValidCredentials)
+            {
+
+                // Obtenemos los detalles del usuario desde la base de datos
+                UserDTO userDetails = userDAO.GetUserDetailsByEmail(user.Email);
+
+                // Almacenamos los detalles del usuario en la sesión
+                Session["UserId"] = userDetails.Id;
+                Session["UserName"] = userDetails.Name;
+                Session["UserLast_Name"] = userDetails.Last_Name;
+                Session["UserRole"] = userDetails.Role_id;
+
+
                 // Credenciales válidas, permite el acceso (por ejemplo, redirige a la página de inicio)
-                    return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
             }
-                else
-                {
-                    // Credenciales inválidas, muestra mensaje de error
-                    ViewBag.ErrorMessage = "Incorrect credentials, check the email and password";
-                }
-            
+            else
+            {
+                // Credenciales inválidas, muestra mensaje de error
+                ViewBag.ErrorMessage = "Incorrect credentials, check the email and password";
+            }
+
 
             // Si el modelo no es válido o las credenciales son inválidas, vuelve a mostrar la vista de inicio de sesión con los errores
             return View(user);
         }
+
+
+
 
         public ActionResult EditUser(int id)
         {
@@ -134,30 +155,6 @@ namespace nomina2.Controllers
                 {
                     // Si el usuario existe, muestra la vista de edición con los detalles del usuario
                     return View(user);
-                }
-                else
-                {
-                    Console.WriteLine("User not found");
-                    return RedirectToAction("ListUser");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error getting user: " + ex.Message);
-                return RedirectToAction("ListUser");
-            }
-        }
-
-        public ActionResult EditUser2(int id)
-        {
-            try
-            {
-                // Intenta obtener un usuario específico utilizando el método GetUserById del repositorio UserDAO
-                OvertimeDTO overtime = userRepository.GetUser2ById(id);
-                if (overtime != null)
-                {
-                    // Si el usuario existe, muestra la vista de edición con los detalles del usuario
-                    return View(overtime);
                 }
                 else
                 {
@@ -190,6 +187,56 @@ namespace nomina2.Controllers
                 return View(user);
             }
         }
+
+
+
+
+        public ActionResult EditUserSecurity(int id)
+        {
+            try
+            {
+                // Intenta obtener un usuario específico utilizando el método GetUserById del repositorio UserDAO
+                UserDTO user = userRepository.GetUserSecurityById(id);
+                if (user != null)
+                {
+                    // Si el usuario existe, muestra la vista de edición con los detalles del usuario
+                    return View(user);
+                }
+                else
+                {
+                    Console.WriteLine("User not found");
+                    return RedirectToAction("ListUserSecurity");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error getting user: " + ex.Message);
+                return RedirectToAction("ListUserSecurity");
+            }
+        }
+
+
+        // POST: User/Edit/
+        [HttpPost]
+        public ActionResult EditUserSecurity(UserDTO user)
+        {
+            try
+            {
+                // Intenta actualizar los detalles del usuario utilizando el método UpdateUser del repositorio UserDAO
+                string result = userRepository.UpdateUserSecurity(user);
+                Console.WriteLine("User updated: " + result);
+                return RedirectToAction("ListUserSecurity");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error updating user: " + ex.Message);
+                return View(user);
+            }
+        }
+
+
+
+
         // GET: User/Delete/
         public ActionResult DeleteUser(int id)
         {

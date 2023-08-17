@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>User List   (Solo Rol PLANILLERO)</h2>
+<h2>User List  (Solo Rol ADMIN)</h2>
 <a href="@Url.Action("CreateUser","User")" class="btn btn-success">Create</a>
 <a href="@Url.Action("RolesList","User")" class="btn btn-primary">Roles Usuario</a>
 <a href="@Url.Action("ListDepartament","User")" class="btn btn-primary">Roles Usuario</a>
@@ -66,23 +66,8 @@
                 <td>@user.Create_date</td>
                 <td>@user.Create_user</td>
                 <td>
-                    <a href="@Url.Action("EditUser", "User", new { id = user.Id })" class="btn btn-success">EDIT</a>
+                    <a href="@Url.Action("EditUserSecurity", "User", new { id = user.Id })" class="btn btn-success">EDIT</a>
                 </td>
-                <td>
-                    <a href="@Url.Action("DeleteUser", "User", new { id = user.Id })" class="btn btn-danger">DEL</a>
-                </td>
-
-                <td>
-                    <a href="@Url.Action("ListOvertime", "Overtime", new { id = user.Id })" class="btn btn-danger">(+)</a>
-                </td>
-                <td>
-                    <a href="@Url.Action("ListDeduction", "Deduction", new { id = user.Id })" class="btn btn-danger">(-)</a>
-                </td>
-
-                <td>
-                    <a href="@Url.Action("ListUser", "user", new { id = user.Id })" class="btn btn-danger">Pagar</a>
-                </td>
-
             </tr>
         }
     </tbody>
