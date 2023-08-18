@@ -133,6 +133,43 @@ namespace nomina2.Models.DAO
             return roles;
         }
 
+        public List<DepartamentDTO> ReadDepartament()
+        {
+            List<DepartamentDTO> departaments = new List<DepartamentDTO>();
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT * FROM tb_departaments";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                DepartamentDTO departament = new DepartamentDTO
+                                {
+                                    Id_departament = Convert.ToInt32(reader["id_departament"]),
+                                    Description = Convert.ToString(reader["description"])
+                                };
+                                departaments.Add(departament);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.ReadDepartament: " + ex.Message);
+            }
+
+            return departaments;
+        }
+
 
         public string InsertUser(UserDTO user)
         {
@@ -155,7 +192,20 @@ namespace nomina2.Models.DAO
                         userCommand.Parameters.AddWithValue("@password", user.Password);
                         userCommand.Parameters.AddWithValue("@type_payment", string.IsNullOrEmpty(user.Type_payment) ? "" : user.Type_payment);
                         userCommand.Parameters.AddWithValue("@amount_salary", user.Amount_salary);
-                        userCommand.Parameters.AddWithValue("@role_id", user.Role_id);
+
+
+
+                        // Verificar si role_id es 0, y asignar 0 si es así
+                        if (user.Role_id == 0)
+                        {
+                            userCommand.Parameters.AddWithValue("@role_id", 0);
+                        }
+                        else
+                        {
+                            userCommand.Parameters.AddWithValue("@role_id", user.Role_id);
+                        }
+
+
                         // Asignar el valor fijo "active" al parámetro @state
                         userCommand.Parameters.AddWithValue("@state", "active");
                         userCommand.Parameters.AddWithValue("@update_date", user.Update_date);
@@ -209,6 +259,52 @@ namespace nomina2.Models.DAO
         }
 
 
+
+        public UserDTO GetUserDetailsByEmail(string email)
+        {
+            UserDTO userDetails = null;
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT id, name, last_name, role_id FROM tb_users WHERE email = @Email";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@Email", email);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                userDetails = new UserDTO
+                                {
+                                    Id = Convert.ToInt32(reader["id"]),
+                                    Name = reader["name"].ToString(),
+                                    Last_Name = reader["last_name"].ToString(),
+                                    Role_id = Convert.ToInt32(reader["role_id"])
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.GetUserDetailsByEmail: " + ex.Message);
+            }
+
+            return userDetails;
+        }
+
+
+
+
+
+
         public UserDTO GetUserById(int id)
         {
             try
@@ -247,6 +343,54 @@ namespace nomina2.Models.DAO
 
             return null;
         }
+
+
+
+
+        public UserDTO GetUserSecurityById(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT Id, Name,Last_Name, Email, State FROM tb_users WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                UserDTO user = new UserDTO
+                                {
+                                    Id = Convert.ToInt32(reader["Id"]),
+                                    Name = reader["Name"].ToString(),
+                                    Last_Name = reader["Last_Name"].ToString(),
+                                    Email = reader["Email"].ToString(),
+                                    State = reader["State"].ToString(),
+                                };
+
+                                return user;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.GetUserById: " + ex.Message);
+            }
+
+            return null;
+        }
+
+
+
+
 
         public OvertimeDTO GetUser2ById(int id)
         {
@@ -320,6 +464,50 @@ namespace nomina2.Models.DAO
 
             return "Failed";
         }
+
+
+
+
+
+
+        public string UpdateUserSecurity(UserDTO user)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string updateQuery = "UPDATE tb_users SET name = @name, last_name = @last_name, email = @email, state = @state WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@name", user.Name);
+                        command.Parameters.AddWithValue("@last_name", user.Last_Name);
+                        command.Parameters.AddWithValue("@email", user.Email);
+                        command.Parameters.AddWithValue("@state", user.State);
+                        command.Parameters.AddWithValue("@id", user.Id);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.UpdateUser: " + ex.Message);
+            }
+
+            return "Failed";
+        }
+
+
+
+
 
 
         public string DeleteUser(int id)

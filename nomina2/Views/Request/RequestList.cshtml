@@ -1,0 +1,42 @@
+﻿@model List<nomina2.Models.DTO.RequestDTO>
+
+@{
+    ViewBag.Title = "Request List";
+}
+
+<h2>Overtime List for User with ID: @ViewBag.UserId</h2>
+
+<a href="@Url.Action("CreateRequest", "Request", new { userId = ViewBag.UserId })" class="btn btn-success">Create</a>
+<a href="@Url.Action("RolesList","User")" class="btn btn-primary">Roles Usuario </a>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Request ID</th>
+            <th>ID</th>
+            <th>Type Request</th>
+            <th>Note</th>
+      <!--  <th>Value</th>
+            <th>Actions</th> -->
+        </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var request in Model)
+            {
+                <tr>
+                    <td>@request.Request_id</td>
+                    <td>@request.Id</td>
+                    <td>@request.Request_note</td>
+                    <td>@request.Type_request</td>
+               
+                    <td>
+                        <a href="@Url.Action("Edit", "Overtime", new { id = request.Id })" class="btn btn-success">Edit</a>
+                        <a href="@Url.Action("DeleteOvertime", "Overtime", new { id = request.Request_id })" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
