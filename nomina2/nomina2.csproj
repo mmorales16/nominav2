@@ -249,6 +249,7 @@
     <Content Include="Views\User\ListDepartament.cshtml" />
     <Content Include="Views\User\EditUserSecurity.cshtml" />
     <Content Include="Views\User\ListUserSecurity.cshtml" />
+    <Content Include="Views\Request\RequestList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

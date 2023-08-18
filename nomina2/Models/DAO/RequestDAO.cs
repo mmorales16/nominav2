@@ -17,7 +17,7 @@ namespace nomina2.Models.DAO
                 using (MySqlConnection connection = Config.GetConnection())
                 {
                     connection.Open();
-                    string selectQuery = "SELECT * FROM tb_requests WHERE state = 1";
+                    string selectQuery = "SELECT * FROM tb_requests";
                     using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
                     {
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -55,7 +55,7 @@ namespace nomina2.Models.DAO
                 using (MySqlConnection connection = Config.GetConnection())
                 {
                     connection.Open();
-                    string selectQuery = "SELECT * FROM tb_requests WHERE user_id = @userId AND state = 1"; // Filtrar solo registros activos
+                    string selectQuery = "SELECT * FROM tb_requests WHERE user_id = @userId"; // Filtrar solo registros activos
                     using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
                     {
                         command.Parameters.AddWithValue("@userId", userId);

@@ -19,7 +19,7 @@ namespace nomina2.Controllers
         public ActionResult ListRequest(int id)
         {
             // Obtener la lista de overtime filtrada por el ID de usuario
-            List<OvertimeDTO> userRequest = requestRepository.ReadActiveRequestByUserId(id);
+            List<RequestDTO> userRequest = requestRepository.ReadActiveRequestByUserId(id);
 
             // Pasar la lista filtrada a la vista
 
