@@ -170,7 +170,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\DeductionController.cs" />
+<<<<<<< HEAD
     <Compile Include="Controllers\LicenseRequestController.cs" />
+=======
+    <Compile Include="Controllers\RequestController.cs" />
+>>>>>>> a8f92b56b39f9c131819f34e4506d7caacee6607
     <Compile Include="Controllers\OvertimeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -180,12 +184,15 @@
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\DAO\LicenseDAO.cs" />
     <Compile Include="Models\DAO\DeductionDAO.cs" />
+    <Compile Include="Models\DAO\RequestDAO.cs" />
     <Compile Include="Models\DAO\OvertimeDAO.cs" />
     <Compile Include="Models\DAO\PaymentDAO.cs" />
     <Compile Include="Models\DAO\UserDAO.cs" />
     <Compile Include="Models\DTO\LicenseDTO.cs" />
     <Compile Include="Models\DTO\DeductionDTO.cs" />
+    <Compile Include="Models\DTO\DepartamentDTO.cs" />
     <Compile Include="Models\DTO\OvertimeDTO.cs" />
+    <Compile Include="Models\DTO\RequestDTO.cs" />
     <Compile Include="Models\DTO\PaymentDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />
     <Compile Include="Models\Roles.cs" />
@@ -196,6 +203,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Icono.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -244,7 +252,14 @@
     <Content Include="Views\Payment\ListPayment.cshtml" />
     <Content Include="Views\Payment\EditPayment.cshtml" />
     <Content Include="Views\Payment\DeletePayment.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\License\CreateLicense.cshtml" />
+=======
+    <Content Include="Views\User\ListDepartament.cshtml" />
+    <Content Include="Views\User\EditUserSecurity.cshtml" />
+    <Content Include="Views\User\ListUserSecurity.cshtml" />
+    <Content Include="Views\Request\RequestList.cshtml" />
+>>>>>>> a8f92b56b39f9c131819f34e4506d7caacee6607
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
