@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\DeductionController.cs" />
+    <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\OvertimeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -178,12 +179,14 @@
     </Compile>
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\DAO\DeductionDAO.cs" />
+    <Compile Include="Models\DAO\RequestDAO.cs" />
     <Compile Include="Models\DAO\OvertimeDAO.cs" />
     <Compile Include="Models\DAO\PaymentDAO.cs" />
     <Compile Include="Models\DAO\UserDAO.cs" />
     <Compile Include="Models\DTO\DeductionDTO.cs" />
     <Compile Include="Models\DTO\DepartamentDTO.cs" />
     <Compile Include="Models\DTO\OvertimeDTO.cs" />
+    <Compile Include="Models\DTO\RequestDTO.cs" />
     <Compile Include="Models\DTO\PaymentDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />
     <Compile Include="Models\Roles.cs" />
