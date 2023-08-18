@@ -14,6 +14,7 @@ namespace nomina2.Controllers
         private UserDAO userRepository = new UserDAO();
         private readonly OvertimeDAO overtimeRepository = new OvertimeDAO();
         private readonly DeductionDAO deductionRepository = new DeductionDAO();
+        //private readonly LicenseDAO licenseRepository = new LicenseDAO();
 
         // GET: User
         public ActionResult ListUser(string searchKeyword)

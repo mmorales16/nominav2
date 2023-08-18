@@ -34,6 +34,7 @@
                 <td>
                     <a href="@Url.Action("UpdateDeduction", "Deduction", new { id = deduction.Deduction_id, userId3 = ViewBag.UserId3})" class="btn btn-success">Edit</a>
                     <a href="@Url.Action("DeleteDeduction", "Deduction", new { id = deduction.Deduction_id, userId = ViewBag.UserId})" class="btn btn-danger">Delete</a>
+                    <a href="@Url.Action("CreateLicense", "License", new { Id = ViewBag.Id })" class="btn btn-success">Create</a>
                 </td>
 
             </tr>

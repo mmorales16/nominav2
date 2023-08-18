@@ -73,7 +73,7 @@ namespace nomina2.Controllers
             return View(deduction);
         }
 
-        public ActionResult EditDeduction(int id, int userId3)
+        public ActionResult UpdateDeduction(int id, int userId)
         {
             try
             {
@@ -82,8 +82,8 @@ namespace nomina2.Controllers
                 if (deduction != null)
                 {
                     // Si el usuario existe, muestra la vista de edición con los detalles del deduction
-                    int Id_actual = userId3;
-                    var routeValues = new RouteValueDictionary(new { id = Id_actual });
+                                    int Id_actual = userId;
+                var routeValues = new RouteValueDictionary(new { id = Id_actual });
                     return RedirectToAction("ListDeduction", routeValues);
                 }
                 else
@@ -101,21 +101,20 @@ namespace nomina2.Controllers
 
         // POST: Deduction/Edit/
         [HttpPost]
-        public ActionResult EditDeduction(DeductionDTO deduction, int userId3)
+        public ActionResult UpdateDeduction(DeductionDTO deduction)
         {
             try
             {
                 // Intenta actualizar los detalles del Deduction utilizando el método UpdateDeduction del repositorio DeductionDAO
                 string result = deductionRepository.UpdateDeduction(deduction);
                 Console.WriteLine("Deduction updated: " + result);
-                int Id_actual = userId3;
-                var routeValues = new RouteValueDictionary(new { id = Id_actual });
-                return RedirectToAction("ListDeduction", routeValues);
+
+                return RedirectToAction("ListDeduction");
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error updating deduction: " + ex.Message);
-                return View("ListDeduction", deductionRepository.ReadActiveDeductionByUserId(userId3));
+                return View("ListDeduction");
             }
         }
 
