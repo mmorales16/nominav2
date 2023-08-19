@@ -100,7 +100,7 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string insertRequestQuery = "INSERT INTO tb_requests (user_id, Request_note, available_days, type_request, start_date, end_date) VALUES (@userId, @Requestnote, @availableDays, @typeRequest, @startDate, @endDate)";
+                    string insertRequestQuery = "INSERT INTO tb_requests (user_id, note, available_days, type_request, start_date, end_date) VALUES (@userId, @Requestnote, @availableDays, @typeRequest, @startDate, @endDate)";
 
 
                     using (MySqlCommand requestCommand = new MySqlCommand(insertRequestQuery, connection))

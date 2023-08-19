@@ -188,7 +188,7 @@ namespace nomina2.Models.DAO
                         //command.Parameters.AddWithValue("@userId", deduction.Id);
                         command.Parameters.AddWithValue("@typeAction", deduction.Type_action);
                         command.Parameters.AddWithValue("@description", deduction.Deduction_description);
-                        //command.Parameters.AddWithValue("@value", deduction.Deduction_value);
+                        command.Parameters.AddWithValue("@value", deduction.Deduction_value);
 
 
                         int rowsAffected = command.ExecuteNonQuery();

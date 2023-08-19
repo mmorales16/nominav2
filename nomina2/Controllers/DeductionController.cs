@@ -73,43 +73,26 @@ namespace nomina2.Controllers
             return View(deduction);
         }
 
+
+
+        // GET: Payment/EditPayment/5
         public ActionResult UpdateDeduction(int id, int userId)
         {
+            ViewBag.UserId = userId; // Pasar el ID de usuario a la vista
             try
             {
-                // Intenta obtener un Deduction específico utilizando el método GetDeductionById del repositorio DeductionDAO
+                // Obtén el pago específico utilizando el método GetPaymentById del repositorio PaymentDAO
                 DeductionDTO deduction = deductionRepository.GetDeductionById(id);
                 if (deduction != null)
                 {
-                    // Si el usuario existe, muestra la vista de edición con los detalles del deduction
-                                    int Id_actual = userId;
-                var routeValues = new RouteValueDictionary(new { id = Id_actual });
-                    return RedirectToAction("ListDeduction", routeValues);
+                    // Muestra la vista de edición con los detalles del pago
+                    return View(deduction);
                 }
                 else
                 {
                     Console.WriteLine("Deduction not found");
-                    return View("ListDeduction", deductionRepository.ReadActiveDeductionByUserId(id));
+                    return RedirectToAction("ListDeduction");
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error getting deduction: " + ex.Message);
-                return View("ListDeduction", deductionRepository.ReadActiveDeductionByUserId(id));
-            }
-        }
-
-        // POST: Deduction/Edit/
-        [HttpPost]
-        public ActionResult UpdateDeduction(DeductionDTO deduction)
-        {
-            try
-            {
-                // Intenta actualizar los detalles del Deduction utilizando el método UpdateDeduction del repositorio DeductionDAO
-                string result = deductionRepository.UpdateDeduction(deduction);
-                Console.WriteLine("Deduction updated: " + result);
-
-                return RedirectToAction("ListDeduction");
             }
             catch (Exception ex)
             {
@@ -117,6 +100,28 @@ namespace nomina2.Controllers
                 return View("ListDeduction");
             }
         }
+
+        // POST: Payment/EditPayment/5
+        [HttpPost]
+        public ActionResult UpdateDeduction(DeductionDTO deduction)
+        {
+            try
+            {
+                string result = deductionRepository.UpdateDeduction(deduction);
+                Console.WriteLine("Deduction updated: " + result);
+
+                int Id_actual = deduction.Id;
+
+                // Redireccionar a la vista "ListPayment" con el UserId como valor de búsqueda
+                return RedirectToAction("ListDeduction", new { searchKeyword = Id_actual });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error updating deduction: " + ex.Message);
+                return View(deduction);
+            }
+        }
+
 
 
 

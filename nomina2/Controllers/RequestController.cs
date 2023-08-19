@@ -28,17 +28,17 @@ namespace nomina2.Controllers
         }
 
         // GET: LicenseRequest
-        public ActionResult CraeteRequest(int id)
-        {
+        //public ActionResult CraeteRequest(int id)
+        //{
 
             // Obtener la lista de deduction filtrada por el ID de usuario
-            List<RequestDTO> userRequest = requestRepository.ReadActiveRequestByUserId(id);
+            //List<RequestDTO> userRequest = requestRepository.ReadActiveRequestByUserId(id);
 
             // Pasar la lista filtrada a la vista
 
-            ViewBag.UserId = id;
-            return View(userRequest);
-        }
+            //ViewBag.UserId = id;
+          //  return View(userRequest);
+        //}
 
         public ActionResult CreateRequest(int userId)
         {
@@ -63,7 +63,7 @@ namespace nomina2.Controllers
                     var routeValues = new RouteValueDictionary(new { id = Id_actual });
 
                     // Redireccionar a la vista "ListDeduction" en caso de éxito
-                    return RedirectToAction("CreateLicense", routeValues);
+                    return RedirectToAction("CreateRequest", routeValues);
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace nomina2.Controllers
             catch (Exception ex)
             {
                 // En caso de excepción, agregar un mensaje de alerta a la ViewBag
-                ViewBag.ErrorMessage = "Ocurrió un error durante la inserción del overtime: " + ex.Message;
+                ViewBag.ErrorMessage = "Ocurrió un error durante la inserción del CreateRequest: " + ex.Message;
             }
 
             // Devolver la vista "CreateDeduction" con los datos de deduction ingresados previamente y el mensaje de alerta (si corresponde).
