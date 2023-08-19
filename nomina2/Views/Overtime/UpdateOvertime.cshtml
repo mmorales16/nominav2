@@ -1,0 +1,50 @@
+﻿@model nomina2.Models.DTO.OvertimeDTO
+
+@{
+    ViewBag.Title = "UpdateOvertime";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Update Overtime</title>
+</head>
+<body>
+    <div>
+        <h2>Update Deduction</h2>
+
+        <!-- Mostrar el mensaje de alerta genérico en caso de otro error -->
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <br />
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        @using (Html.BeginForm("UpdateOvertime", "Overtime", FormMethod.Post, new { @class = "form" }))
+        {
+            <!-- Nuevo TextBoxFor para mostrar el valor del userId -->
+            <div class="form-group">
+                <label>User ID:</label>
+                @Html.TextBoxFor(model => model.Id, new { @class = "form-control", @readonly = "readonly", Value = ViewBag.UserId })
+            </div>
+
+            <div class="form-group">
+                <label>Description:</label>
+                @Html.TextBoxFor(model => model.Overtime_description, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Type Action:</label>
+                @Html.TextBoxFor(model => model.Type_action, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Value:</label>
+                @Html.TextBoxFor(model => model.Overtime_value, new { @class = "form-control" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        }
+    </div>
+</body>
+</html>

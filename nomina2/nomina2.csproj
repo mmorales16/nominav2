@@ -251,6 +251,7 @@
     <Content Include="Views\User\ListUserSecurity.cshtml" />
     <Content Include="Views\Request\RequestList.cshtml" />
     <Content Include="Views\Request\CreateRequest.cshtml" />
+    <Content Include="Views\Overtime\UpdateOvertime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
