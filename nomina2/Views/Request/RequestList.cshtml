@@ -1,42 +1,38 @@
 ﻿@model List<nomina2.Models.DTO.RequestDTO>
 
 @{
-    ViewBag.Title = "Request List";
+    ViewBag.Title = "RequestList";
 }
 
-<h2>Overtime List for User with ID: @ViewBag.UserId</h2>
+<h2>Solicitudes para el Usuario con ID: @ViewBag.UserId</h2>
 
-<a href="@Url.Action("CreateRequest", "Request", new { userId = ViewBag.UserId })" class="btn btn-success">Create</a>
-<a href="@Url.Action("RolesList","User")" class="btn btn-primary">Roles Usuario </a>
-<br />
-<table class="table">
-    <thead>
-        <tr>
-            <th>Request ID</th>
-            <th>ID</th>
-            <th>Type Request</th>
-            <th>Note</th>
-      <!--  <th>Value</th>
-            <th>Actions</th> -->
-        </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var request in Model)
-            {
+@{
+    if (Model != null && Model.Count > 0)
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@request.Request_id</td>
-                    <td>@request.Id</td>
-                    <td>@request.Request_note</td>
-                    <td>@request.Type_request</td>
-               
-                    <td>
-                        <a href="@Url.Action("Edit", "Overtime", new { id = request.Id })" class="btn btn-success">Edit</a>
-                        <a href="@Url.Action("DeleteOvertime", "Overtime", new { id = request.Request_id })" class="btn btn-danger">Delete</a>
-                    </td>
+                    <th>ID de Solicitud</th>
+                    <th>ID de Usuario</th>
+                    <th>Tipo de Solicitud</th>
+                    <th>Nota</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td>@request.Request_id</td>
+                        <td>@request.Id</td>
+                        <td>@request.Type_request</td>
+                        <td>@request.Request_note</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No se encontraron solicitudes.</p>
+    }
+}

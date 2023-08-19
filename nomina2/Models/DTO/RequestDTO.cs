@@ -8,7 +8,7 @@ namespace nomina2.Models.DTO
     public class RequestDTO
     {
         public string Type_request { get; set; }
-        //public decimal Overtime_value { get; set; }
+        
         public DateTime Start_date { get; set; }
         public DateTime End_date { get; set; }
         public int Available_days { get; set; }

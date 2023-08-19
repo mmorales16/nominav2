@@ -13,31 +13,27 @@ namespace nomina2.Controllers
 {
     public class RequestController : Controller
     {
-        private RequestDAO requestRepository = new RequestDAO();    
+        private RequestDAO requestRepository = new RequestDAO();
 
 
-        public ActionResult ListRequest(int id)
+        public ActionResult RequestList()
         {
-            // Obtener la lista de overtime filtrada por el ID de usuario
-            List<RequestDTO> userRequest = requestRepository.ReadActiveRequestByUserId(id);
+            List<RequestDTO> allRequests = requestRepository.ReadAllRequests(); // Modificar el nombre del método según corresponda
 
-            // Pasar la lista filtrada a la vista
-
-            ViewBag.UserId = id;
-            return View(userRequest);
+            return View(allRequests);
         }
 
         // GET: LicenseRequest
         //public ActionResult CraeteRequest(int id)
         //{
 
-            // Obtener la lista de deduction filtrada por el ID de usuario
-            //List<RequestDTO> userRequest = requestRepository.ReadActiveRequestByUserId(id);
+        // Obtener la lista de deduction filtrada por el ID de usuario
+        //List<RequestDTO> userRequest = requestRepository.ReadActiveRequestByUserId(id);
 
-            // Pasar la lista filtrada a la vista
+        // Pasar la lista filtrada a la vista
 
-            //ViewBag.UserId = id;
-          //  return View(userRequest);
+        //ViewBag.UserId = id;
+        //  return View(userRequest);
         //}
 
         public ActionResult CreateRequest(int userId)
