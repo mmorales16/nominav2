@@ -1,0 +1,35 @@
+﻿@model List<nomina2.Models.DTO.PaymentResumenDTO>
+
+@{
+    ViewBag.Title = "Payment Resumen";
+}
+
+<h2>Payment Resumen</h2>
+
+<table class="table">
+    <tr>
+        <th>User ID</th>
+        <th>User Name</th>
+        <th>Gross Salary</th>
+        <th>Worked Days</th>
+        <th>Total Monto Deduction</th>
+        <th>Total Monto Overtime</th>
+        <th>Total Deduction Porcentaje</th>
+        <th>Total Overtime Porcentaje</th>
+        <th>Total To Pay</th>
+    </tr>
+    @foreach (var paymentResumen in Model)
+    {
+        <tr>
+            <td>@paymentResumen.UserId</td>
+            <td>@paymentResumen.UserName</td>
+            <td>@paymentResumen.GrossSalary</td>
+            <td>@paymentResumen.WorkedDays</td>
+            <td>@paymentResumen.TotalMontoDeduction</td>
+            <td>@paymentResumen.TotalMontoOvertime</td>
+            <td>@paymentResumen.TotalDeductionPorcentaje</td>
+            <td>@paymentResumen.TotalOvertimePorcentaje</td>
+            <td>@paymentResumen.TotalToPay</td>
+        </tr>
+    }
+</table>

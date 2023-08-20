@@ -1,18 +1,18 @@
 ﻿@model nomina2.Models.DTO.UserDTO
 
 @{
-    ViewBag.Title = "Edit User";
+    ViewBag.Title = "EditUserSecurity";
 }
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Edit (solo administrador)</title>
+    <title>Edit</title>
 </head>
 <body>
 
-    <h2>Update user </h2>
+    <h2>Update user    (solo administrador) </h2>
     <div>
         @using (Html.BeginForm("EditUserSecurity", "User", FormMethod.Post, new { @class = "form" }))
         {
@@ -40,6 +40,11 @@
                     new SelectListItem { Text = "Active", Value = "Active" },
                     new SelectListItem { Text = "Inactive", Value = "Inactive" }
                 }, "Value", "Text"), new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Role:</label>
+                @Html.DropDownListFor(model => model.Role_id, (SelectList)ViewBag.Roles, "Select a role", new { @class = "form-control" })
             </div>
 
 

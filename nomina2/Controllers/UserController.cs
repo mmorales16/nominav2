@@ -1,4 +1,5 @@
 ﻿
+using nomina2.Models;
 using nomina2.Models.DAO;
 using nomina2.Models.DTO;
 using System;
@@ -154,6 +155,10 @@ namespace nomina2.Controllers
                 UserDTO user = userRepository.GetUserById(id);
                 if (user != null)
                 {
+
+                    List<DepartamentDTO> departaments = userRepository.ReadDepartament();
+                    ViewBag.Departaments = new SelectList(departaments, "Id_departament", "Description");
+
                     // Si el usuario existe, muestra la vista de edición con los detalles del usuario
                     return View(user);
                 }
@@ -200,7 +205,9 @@ namespace nomina2.Controllers
                 UserDTO user = userRepository.GetUserSecurityById(id);
                 if (user != null)
                 {
-                    // Si el usuario existe, muestra la vista de edición con los detalles del usuario
+
+                    List<Roles> roles = userRepository.ReadRoles();
+                    ViewBag.Roles = new SelectList(roles, "Id", "Description");
                     return View(user);
                 }
                 else
@@ -235,7 +242,57 @@ namespace nomina2.Controllers
             }
         }
 
+        public ActionResult EditUserSingle(int id)
+        {
+            try
+            {
 
+
+                // Intenta obtener un usuario específico utilizando el método GetUserById del repositorio UserDAO
+                UserDTO user = userRepository.GetUserSingleById(id);
+                if (user != null)
+                {
+
+                    List<DepartamentDTO> departaments = userRepository.ReadDepartament();
+                    ViewBag.Departaments = new SelectList(departaments, "Id_departament", "Description");
+
+                    List<Roles> roles = userRepository.ReadRoles();
+                    ViewBag.Roles = new SelectList(roles, "Id", "Description");
+                    return View(user);
+
+
+                }
+                else
+                {
+                    Console.WriteLine("User not found");
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error getting user: " + ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+
+        // POST: User/Edit/
+        [HttpPost]
+        public ActionResult EditUserSingle(UserDTO user)
+        {
+            try
+            {
+                // Intenta actualizar los detalles del usuario utilizando el método UpdateUser del repositorio UserDAO
+                string result = userRepository.UpdateUserSingle(user);
+                Console.WriteLine("User updated: " + result);
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error updating user: " + ex.Message);
+                return View(user);
+            }
+        }
 
 
         // GET: User/Delete/

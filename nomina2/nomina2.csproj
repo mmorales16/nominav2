@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\DeductionController.cs" />
+    <Compile Include="Controllers\PaymentResumenController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\OvertimeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -179,6 +180,7 @@
     </Compile>
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\DAO\DeductionDAO.cs" />
+    <Compile Include="Models\DAO\PaymentResumenDTO.cs" />
     <Compile Include="Models\DAO\RequestDAO.cs" />
     <Compile Include="Models\DAO\OvertimeDAO.cs" />
     <Compile Include="Models\DAO\PaymentDAO.cs" />
@@ -186,6 +188,7 @@
     <Compile Include="Models\DTO\DeductionDTO.cs" />
     <Compile Include="Models\DTO\DepartamentDTO.cs" />
     <Compile Include="Models\DTO\OvertimeDTO.cs" />
+    <Compile Include="Models\DTO\PaymentResumenDTO.cs" />
     <Compile Include="Models\DTO\RequestDTO.cs" />
     <Compile Include="Models\DTO\PaymentDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />
@@ -253,6 +256,8 @@
     <Content Include="Views\Request\CreateRequest.cshtml" />
     <Content Include="Views\Overtime\UpdateOvertime.cshtml" />
     <Content Include="Views\Request\RequestListAdmin.cshtml" />
+    <Content Include="Views\User\EditUserSingle.cshtml" />
+    <Content Include="Views\PaymentResumen\ListPaymentResumen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -37,6 +37,10 @@
                                 <span style="color: white;">/ ID ► @Session["UserId"] / Role ► @Session["UserRole"]</span>
                             </li>
 
+                            <li>
+                                <a href="@Url.Action("EditUserSingle", "User", new { id = @Session["UserId"] })" class="btn btn-success">EDIT</a>
+
+                            </li>
                         }
                         <!-- Otras opciones de navegación -->
                     </ul>

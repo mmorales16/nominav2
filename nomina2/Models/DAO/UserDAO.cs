@@ -59,6 +59,59 @@ namespace nomina2.Models.DAO
         }
 
 
+
+
+        public List<UserDTO> ReadUsersSingle(string searchKeyword)
+        {
+            List<UserDTO> users = new List<UserDTO>();
+
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+                    string selectQuery = "SELECT * FROM tb_users WHERE name LIKE @searchKeyword OR email LIKE @searchKeyword";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@searchKeyword", "%" + searchKeyword + "%");
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                UserDTO user = new UserDTO();
+                                user.Id = reader.GetInt32("id");
+                                user.Name = reader.GetString("name");
+                                user.Last_Name = reader.GetString("last_name");
+                                user.Email = reader.GetString("email");
+                                user.Telephone_number = reader.GetString("telephone_number");
+                                user.Department_id = reader.GetInt32("department_id");
+                                user.Password = reader.GetString("password");
+                                user.Type_payment = reader.GetString("type_payment");
+                                user.Amount_salary = reader.GetDecimal("amount_salary");
+                                user.Role_id = reader.GetInt32("role_id");
+                                user.State = reader.GetString("state");
+                                user.Update_date = reader.GetDateTime("update_date");
+                                user.Update_user = reader.GetString("update_user");
+                                user.Create_date = reader.GetDateTime("create_date");
+                                user.Create_user = reader.GetString("create_user");
+                                users.Add(user);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in nomina.Models.DAO.UserDAO.ReadUsers:" + ex.Message);
+            }
+            return users;
+        }
+
+
+
+
         public List<UserDTO> ReadUsers3(string searchKeyword)
         {
             List<UserDTO> users = new List<UserDTO>();
@@ -208,7 +261,7 @@ namespace nomina2.Models.DAO
 
                         // Asignar el valor fijo "active" al parámetro @state
                         userCommand.Parameters.AddWithValue("@state", "active");
-                        userCommand.Parameters.AddWithValue("@update_date", user.Update_date);
+                        userCommand.Parameters.AddWithValue("@update_date", DateTime.Now);
                         userCommand.Parameters.AddWithValue("@update_user", string.IsNullOrEmpty(user.Update_user) ? "MMORALES" : user.Update_user);
                         // Asignar automáticamente la fecha y hora actual al parámetro @create_date
                         userCommand.Parameters.AddWithValue("@create_date", DateTime.Now);
@@ -313,7 +366,7 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string selectQuery = "SELECT Id, Name, Email FROM tb_users WHERE Id = @id";
+                    string selectQuery = "SELECT Id, Name, Last_Name, Department_Id, State, Type_Payment, Amount_Salary  FROM tb_users WHERE Id = @id";
 
                     using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
                     {
@@ -327,7 +380,12 @@ namespace nomina2.Models.DAO
                                 {
                                     Id = Convert.ToInt32(reader["Id"]),
                                     Name = reader["Name"].ToString(),
-                                    Email = reader["Email"].ToString()
+                                    Last_Name = reader["Last_Name"].ToString(),
+                                    Department_id = Convert.ToInt32(reader["Department_Id"]),
+                                    State = reader["State"].ToString(),
+                                    Type_payment = reader["Type_Payment"].ToString(),
+                                    Amount_salary = reader.GetDecimal("Amount_Salary"),
+
                                 };
 
                                 return user;
@@ -372,6 +430,7 @@ namespace nomina2.Models.DAO
                                     Last_Name = reader["Last_Name"].ToString(),
                                     Email = reader["Email"].ToString(),
                                     State = reader["State"].ToString(),
+                                    Role_id = Convert.ToInt32(reader["Role_Id"]),
                                 };
 
                                 return user;
@@ -388,6 +447,51 @@ namespace nomina2.Models.DAO
             return null;
         }
 
+        public UserDTO GetUserSingleById(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT Id, Name, Last_Name,telephone_number, Email,department_id, State, Role_Id, type_payment, amount_salary FROM tb_users WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                UserDTO user = new UserDTO
+                                {
+                                    Id = Convert.ToInt32(reader["Id"]),
+                                    Name = reader["Name"].ToString(),
+                                    Last_Name = reader["Last_Name"].ToString(),
+                                    Telephone_number = reader["telephone_number"].ToString(),
+                                    Email = reader["Email"].ToString(),
+                                    Department_id = Convert.ToInt32(reader["department_id"]),
+                                    Role_id = Convert.ToInt32(reader["Role_Id"]),
+                                    Type_payment = reader["type_payment"].ToString(),
+                                    Amount_salary = reader.GetDecimal("amount_salary"),
+
+                                };
+
+                                return user;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.GetUserById: " + ex.Message);
+            }
+
+            return null;
+        }
 
 
 
@@ -431,7 +535,6 @@ namespace nomina2.Models.DAO
             return null;
         }
 
-
         public string UpdateUser(UserDTO user)
         {
             try
@@ -440,13 +543,22 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string updateQuery = "UPDATE tb_users SET name = @name, email = @email WHERE Id = @id";
+                    string updateQuery = "UPDATE tb_users SET name = @name, last_name = @last_name, department_id = @department_id, state = @state, type_payment = @type_payment, amount_salary = @amount_salary, update_date = @update_date, update_user = @update_user WHERE Id = @id";
 
                     using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
                     {
                         command.Parameters.AddWithValue("@name", user.Name);
-                        command.Parameters.AddWithValue("@email", user.Email);
+                        command.Parameters.AddWithValue("@last_name", user.Last_Name);
+                        command.Parameters.AddWithValue("@department_id", user.Department_id);
+                        command.Parameters.AddWithValue("@state", user.State);
+                        command.Parameters.AddWithValue("@type_payment", user.Type_payment);
+                        command.Parameters.AddWithValue("@amount_salary", user.Amount_salary);
+
+                        command.Parameters.AddWithValue("@update_date", DateTime.Now);
+                        command.Parameters.AddWithValue("@update_user", string.IsNullOrEmpty(user.Update_user) ? "MMORALES" : user.Update_user);
+
                         command.Parameters.AddWithValue("@id", user.Id);
+
 
                         int rowsAffected = command.ExecuteNonQuery();
 
@@ -486,6 +598,9 @@ namespace nomina2.Models.DAO
                         command.Parameters.AddWithValue("@last_name", user.Last_Name);
                         command.Parameters.AddWithValue("@email", user.Email);
                         command.Parameters.AddWithValue("@state", user.State);
+                        command.Parameters.AddWithValue("@role_id", user.Role_id);
+                        command.Parameters.AddWithValue("@update_date", DateTime.Now);
+                        command.Parameters.AddWithValue("@update_user", string.IsNullOrEmpty(user.Update_user) ? "MMORALES" : user.Update_user);
                         command.Parameters.AddWithValue("@id", user.Id);
 
                         int rowsAffected = command.ExecuteNonQuery();
@@ -507,6 +622,43 @@ namespace nomina2.Models.DAO
 
 
 
+
+        public string UpdateUserSingle(UserDTO user)
+        {
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+
+                    string updateQuery = "UPDATE tb_users SET name = @name, last_name = @last_name, email = @email, telephone_number = @telephone_number WHERE Id = @id";
+
+                    using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@name", user.Name);
+                        command.Parameters.AddWithValue("@last_name", user.Last_Name);
+                        command.Parameters.AddWithValue("@telephone_number", user.Telephone_number);
+                        command.Parameters.AddWithValue("@email", user.Email);
+                        command.Parameters.AddWithValue("@update_date", DateTime.Now);
+                        command.Parameters.AddWithValue("@update_user", string.IsNullOrEmpty(user.Update_user) ? "MMORALES" : user.Update_user);
+                        command.Parameters.AddWithValue("@id", user.Id);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return "Success";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in UserDAO.UpdateUser: " + ex.Message);
+            }
+
+            return "Failed";
+        }
 
 
 

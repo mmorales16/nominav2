@@ -1,6 +1,5 @@
 ﻿@model nomina2.Models.DTO.UserDTO
 
-
 @{
     ViewBag.Title = "Edit User";
 }
@@ -13,7 +12,12 @@
 </head>
 <body>
 
-    <h2>Update user </h2>
+
+    @{
+        string formattedAmount = string.Format("{0:C}", Model.Amount_salary);
+    }
+
+    <h2>Update user   (solo planillero)</h2>
     <div>
         @using (Html.BeginForm("EditUser", "User", FormMethod.Post, new { @class = "form" }))
         {
@@ -21,13 +25,49 @@
 
             <div class="form-group">
                 <label>Name:</label>
-                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @readonly = "readonly" })
             </div>
 
             <div class="form-group">
-                <label>Email:</label>
-                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                <label>Last Name:</label>
+                @Html.TextBoxFor(model => model.Last_Name, new { @class = "form-control", @readonly = "readonly" })
             </div>
+
+
+            <div class="form-group">
+                <label>Departament:</label>
+                @Html.DropDownListFor(model => model.Department_id, (SelectList)ViewBag.Departaments, "Select a Departament", new { @class = "form-control" })
+            </div>
+
+
+
+            <div class="form-group">
+                <label>State:</label>
+                @Html.DropDownListFor(model => model.State, new SelectList(new[]
+                {
+                    new SelectListItem { Text = "Active", Value = "Active" },
+                    new SelectListItem { Text = "Inactive", Value = "Inactive" }
+                }, "Value", "Text"), new { @class = "form-control" })
+            </div>
+
+
+            <div class="form-group">
+                <label>Type payment:</label>
+                @Html.DropDownListFor(model => model.Type_payment, new SelectList(new[]
+                {
+                    new SelectListItem { Text = "Mensual", Value = "Mensual" },
+                    new SelectListItem { Text = "Por horas", Value = "Por horas" }
+                }, "Value", "Text"), new { @class = "form-control" })
+            </div>
+
+
+
+            <div class="form-group">
+                <label>Amount salary:</label>
+                @Html.TextBoxFor(model => model.Amount_salary, new { @class = "form-control", @step = "0.01", @value = formattedAmount })
+            </div>
+
+            <br />
             <button type="submit" class="btn btn-primary">Update</button>
         }
     </div>
