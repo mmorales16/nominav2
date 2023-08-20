@@ -17,7 +17,7 @@ namespace nomina2.Controllers
     {
         private DeductionDAO deductionRepository = new DeductionDAO();
 
-        
+
         public ActionResult ListDeduction(int id)
         {
             // Obtener la lista de deduction filtrada por el ID de usuario
@@ -86,6 +86,7 @@ namespace nomina2.Controllers
                 if (deduction != null)
                 {
                     // Muestra la vista de edición con los detalles del pago
+
                     return View(deduction);
                 }
                 else

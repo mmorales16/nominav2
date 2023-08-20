@@ -17,7 +17,7 @@ namespace nomina2.Models.DAO
                 using (MySqlConnection connection = Config.GetConnection())
                 {
                     connection.Open();
-                    string selectQuery = "SELECT * FROM tb_deductions WHERE state = 1";
+                    string selectQuery = "SELECT * FROM tb_deductions";
                     using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
                     {
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -28,7 +28,6 @@ namespace nomina2.Models.DAO
                                 //deductions.Id = reader.GetInt32("id");
                                 deduction.Deduction_id = reader.GetInt32("id_deductions");
                                 deduction.Deduction_description = reader.GetString("description");
-
                                 //deductions.Type_action = reader.GetString("type_action");
                                 deductions.Add(deduction);
 
@@ -43,10 +42,6 @@ namespace nomina2.Models.DAO
             }
             return deductions;
         }
-
-
-
-
 
         public List<DeductionDTO> ReadActiveDeductionByUserId(int userId)
         {

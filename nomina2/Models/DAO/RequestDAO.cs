@@ -44,6 +44,39 @@ namespace nomina2.Models.DAO
             return requests;
         }
 
+        public List<RequestDTO> ReadAllRequestsAdmin()
+        {
+            List<RequestDTO> requests = new List<RequestDTO>();
+            try
+            {
+                using (MySqlConnection connection = Config.GetConnection())
+                {
+                    connection.Open();
+                    string selectQuery = "SELECT * FROM tb_requests"; // Obtener todas las solicitudes sin filtrar
+                    using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                RequestDTO request = new RequestDTO();
+                                request.Request_id = reader.GetInt32("id_request");
+                                request.Id = reader.GetInt32("user_id");
+                                request.Request_note = reader.GetString("note");
+                                request.Type_request = reader.GetString("type_request");
+                                requests.Add(request);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in RequestDAO.ReadAllRequests: " + ex.Message);
+            }
+            return requests;
+        }
+
 
 
 

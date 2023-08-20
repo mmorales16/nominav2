@@ -9,7 +9,6 @@
 @{
     if (Model != null && Model.Count > 0)
     {
-        <a href="@Url.Action("CreateRequest", "Request", new { userId = @ViewBag.userId })" class="btn btn-success">Create</a>
         <table class="table">
             <thead>
                 <tr>
@@ -27,7 +26,6 @@
                         <td>@request.Id</td>
                         <td>@request.Type_request</td>
                         <td>@request.Request_note</td>
-
                     </tr>
                 }
             </tbody>

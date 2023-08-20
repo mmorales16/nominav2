@@ -252,6 +252,7 @@
     <Content Include="Views\Request\RequestList.cshtml" />
     <Content Include="Views\Request\CreateRequest.cshtml" />
     <Content Include="Views\Overtime\UpdateOvertime.cshtml" />
+    <Content Include="Views\Request\RequestListAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
