@@ -2,43 +2,83 @@
 
 @{
     ViewBag.Title = "RequestList";
-}
+    bool showNotification = ViewBag.ShowNotification ?? false; // Obtiene el estado actual de la notificación
 
-<h2>Solicitudes para el Usuario con ID: @ViewBag.UserId</h2>
-
-@{
-    if (Model != null && Model.Count > 0)
+    // Verifica si se hizo clic en el botón de notificaciones
+    if (IsPost && Request.Form["notificationButton"] != null)
     {
-        <a href="@Url.Action("CreateRequest", "Request", new { userId = @ViewBag.userId })" class="btn btn-success">Create</a>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID de Solicitud</th>
-                    <th>ID de Usuario</th>
-                    <th>Tipo de Solicitud</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Nota</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var request in Model)
-                {
-                    <tr>
-                        <td>@request.Request_id</td>
-                        <td>@request.Id</td>
-                        <td>@request.Type_request</td>
-                        <td>@request.Start_date.ToString("yyyy-MM-dd")</td>
-                        <td>@request.End_date.ToString("yyyy-MM-dd")</td>
-                        <td>@request.Request_note</td>
-                       
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No se encontraron solicitudes.</p>
+        // Cambia el estado de la notificación en cada clic
+        showNotification = !showNotification;
+        ViewBag.ShowNotification = showNotification;
     }
 }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Solicitudes para el Usuario con ID: @ViewBag.UserId</h2>
+
+
+        <a href="@Url.Action("CreateRequest", "Request", new { userId = @ViewBag.userId })" class="btn btn-success">Create Request</a>
+        <div class="text-right">
+            <form method="post">
+                <button type="submit" name="notificationButton" class="btn btn-info">Notification <span class="badge badge-light"></span></button>
+            </form>
+        </div>
+
+        @if (showNotification)
+        {
+            <div id="notification" class="alert alert-info">
+                Hola mundo <!--AQUI ESTÁ EL HOLA MUNDO-->
+            </div>
+        }
+
+        @if (Model != null && Model.Count > 0)
+        {
+            <table class="table">
+                <thead>
+                  <tr>
+                      <th>ID de Solicitud</th>
+                      <th>ID de Usuario</th>
+                      <th>Tipo de Solicitud</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Nota</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model)
+                    {
+                        <tr>
+                            <td>@request.Request_id</td>
+                            <td>@request.Id</td>
+                            <td>@request.Type_request</td>
+                            <td>@request.Start_date.ToString("yyyy-MM-dd")</td>
+                            <td>@request.End_date.ToString("yyyy-MM-dd")</td>
+                            <td>@request.Request_note</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No se encontraron solicitudes.</p>
+        }
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#notification").on("click", function () {
+                $(this).hide(); // Ocultar la notificación al hacer clic en ella, ÓJO, NO AL BOTÓn SINO AL CUADRO AZUL
+            });
+        });
+    </script>
+</body>
+</html>

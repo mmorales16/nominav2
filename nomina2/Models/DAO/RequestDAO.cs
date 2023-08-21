@@ -10,7 +10,7 @@ namespace nomina2.Models.DAO
 {
     public class RequestDAO
     {
-        
+
         public List<RequestDTO> ReadAllRequests()
         {
             List<RequestDTO> requests = new List<RequestDTO>();
@@ -132,7 +132,7 @@ namespace nomina2.Models.DAO
         }
 
 
-        
+
 
     }
 }
