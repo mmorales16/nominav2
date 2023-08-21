@@ -30,7 +30,9 @@ namespace nomina2.Models.DAO
                                 request.Request_id = reader.GetInt32("id_request");
                                 request.Id = reader.GetInt32("user_id");
                                 request.Request_note = reader.GetString("note");
-                                request.Type_request = reader.GetString("type_request");                                                               
+                                request.Type_request = reader.GetString("type_request");
+                                request.Start_date = reader.GetDateTime("start_date");
+                                request.End_date = reader.GetDateTime("end_date");
                                 requests.Add(request);
                             }
                         }
@@ -64,6 +66,8 @@ namespace nomina2.Models.DAO
                                 request.Id = reader.GetInt32("user_id");
                                 request.Request_note = reader.GetString("note");
                                 request.Type_request = reader.GetString("type_request");
+                                request.Start_date = reader.GetDateTime("start_date");
+                                request.End_date = reader.GetDateTime("end_date");
                                 requests.Add(request);
                             }
                         }

@@ -16,6 +16,8 @@
                     <th>ID de Solicitud</th>
                     <th>ID de Usuario</th>
                     <th>Tipo de Solicitud</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
                     <th>Nota</th>
                 </tr>
             </thead>
@@ -23,13 +25,13 @@
                 @foreach (var request in Model)
                 {
                     <tr>
-
-
                         <td>@request.Request_id</td>
                         <td>@request.Id</td>
                         <td>@request.Type_request</td>
+                        <td>@request.Start_date.ToString("yyyy-MM-dd")</td>
+                        <td>@request.End_date.ToString("yyyy-MM-dd")</td>
                         <td>@request.Request_note</td>
-
+                       
                     </tr>
                 }
             </tbody>
