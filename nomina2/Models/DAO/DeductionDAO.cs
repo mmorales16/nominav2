@@ -176,15 +176,17 @@ namespace nomina2.Models.DAO
                 {
                     connection.Open();
 
-                    string updateQuery = "UPDATE tb_deductions SET type_action = @typeAction, description = @description, value = @value WHERE Id = @id";
+                    string updateQuery = "UPDATE tb_dedutions SET description = @description, type_action = @type_action, value = @value WHERE Id = @id";
 
                     using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
                     {
-                        //command.Parameters.AddWithValue("@userId", deduction.Id);
-                        command.Parameters.AddWithValue("@typeAction", deduction.Type_action);
                         command.Parameters.AddWithValue("@description", deduction.Deduction_description);
+                        command.Parameters.AddWithValue("@type_action", deduction.Type_action);
                         command.Parameters.AddWithValue("@value", deduction.Deduction_value);
-
+                        //command.Parameters.AddWithValue("@email", user.Email);
+                        //command.Parameters.AddWithValue("@update_date", DateTime.Now);
+                        command.Parameters.AddWithValue("@update_user", string.IsNullOrEmpty(deduction.Update_deduction) ? "MMORALES" : deduction.Update_deduction);
+                        command.Parameters.AddWithValue("@id", deduction.Id);
 
                         int rowsAffected = command.ExecuteNonQuery();
 

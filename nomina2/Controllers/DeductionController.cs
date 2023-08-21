@@ -75,19 +75,26 @@ namespace nomina2.Controllers
 
 
 
-        // GET: Payment/EditPayment/5
-        public ActionResult UpdateDeduction(int id, int userId)
+        public ActionResult UpdateDeduction(int id)
         {
-            ViewBag.UserId = userId; // Pasar el ID de usuario a la vista
+
             try
             {
-                // Obtén el pago específico utilizando el método GetPaymentById del repositorio PaymentDAO
+
+
+                // Intenta obtener un usuario específico utilizando el método GetUserById del repositorio UserDAO
                 DeductionDTO deduction = deductionRepository.GetDeductionById(id);
                 if (deduction != null)
                 {
-                    // Muestra la vista de edición con los detalles del pago
 
-                    return View(deduction);
+                    List<DeductionDTO> deductions = deductionRepository.ReadDeduction();
+                    ViewBag.Deduction = new SelectList(deductions, "Id_deduction", "description");
+
+                    //List<DeductionDTO> deductions1 = deductionRepository.ReadDeduction();
+                    //ViewBag.Deduction = new SelectList(deductions1, "Id_deduction", "description");
+                    return View(deductions);
+
+
                 }
                 else
                 {
@@ -97,24 +104,22 @@ namespace nomina2.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error updating deduction: " + ex.Message);
-                return View("ListDeduction");
+                Console.WriteLine("Error getting deduction: " + ex.Message);
+                return RedirectToAction("ListDeduction");
             }
         }
 
-        // POST: Payment/EditPayment/5
+
+        // POST: User/Edit/
         [HttpPost]
         public ActionResult UpdateDeduction(DeductionDTO deduction)
         {
             try
             {
+                // Intenta actualizar los detalles del usuario utilizando el método UpdateUser del repositorio UserDAO
                 string result = deductionRepository.UpdateDeduction(deduction);
                 Console.WriteLine("Deduction updated: " + result);
-
-                int Id_actual = deduction.Id;
-
-                // Redireccionar a la vista "ListPayment" con el UserId como valor de búsqueda
-                return RedirectToAction("ListDeduction", new { searchKeyword = Id_actual });
+                return RedirectToAction("ListDeduction");
             }
             catch (Exception ex)
             {

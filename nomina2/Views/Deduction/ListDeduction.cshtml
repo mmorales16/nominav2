@@ -35,10 +35,10 @@
                 <td>@deduction.Type_action</td>
                 <td>@deduction.Deduction_value</td>
                 <td>
-                    <a href="@Url.Action("Edit", "User", new { id = deduction.Id })" class="btn btn-success">Edit</a>
+                    <a href="@Url.Action("Edit", "Deduction", new { id = deduction.Id })" class="btn btn-success">Edit</a>
                 </td>
                 <td>
-                    <a href="@Url.Action("Delete", "User", new { id = deduction.Id })" class="btn btn-danger"> Delete</a>
+                    <a href="@Url.Action("Delete", "Deduction", new { id = deduction.Id })" class="btn btn-danger"> Delete</a>
                 </td>
                 <td><a href="@Url.Action("CreateRequest", "Request", new { userId = ViewBag.userId })" class="btn btn-success">Create</a></td>
             </tr>
