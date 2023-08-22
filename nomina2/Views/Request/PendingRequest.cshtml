@@ -1,0 +1,82 @@
+﻿@model nomina2.Models.DTO.RequestDTO
+@{
+    ViewBag.Title = "PendingRequest";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pending Request</title>
+</head>
+<body>
+    <div>
+        <h2>Pending Request</h2>
+
+        <!-- Mostrar el mensaje de alerta genérico en caso de otro error -->
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <br />
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        @using (Html.BeginForm("PendingRequest", "Request", FormMethod.Post, new { @class = "form" }))
+        {
+            <div class="form-group">
+                <label>User ID:</label>
+                @Html.TextBoxFor(model => model.Id, new { @class = "form-control", @readonly = "readonly", Value = ViewBag.UserId })
+            </div>
+
+            <div class="form-group">
+                <label>Type Request:</label>
+                @Html.TextBoxFor(model => model.Type_request, new { @class = "form-control", @readonly = "readonly" })
+            </div>
+
+            <div class="form-group">
+                <label>Avaible_days:</label>
+                @Html.TextBoxFor(model => model.Available_days, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label>Start Day:</label>
+                @Html.TextBoxFor(model => model.Start_date, new { @class = "form-control", @readonly = "readonly", type = "date", Value = DateTime.Now.ToString("yyyy-MM-dd") })
+            </div>
+
+            <div class="form-group">
+                <label>End Day:</label>
+                @Html.TextBoxFor(model => model.End_date, new { @class = "form-control", type = "date", Value = DateTime.Now.ToString("yyyy-MM-dd") })
+            </div>
+
+            <div class="form-group">
+                <label>Note/Comment:</label>
+                @Html.TextBoxFor(model => model.Request_note, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Active, "Estado de Activación")
+                @Html.DropDownListFor(model => model.Active, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Pendiente", Value = "1" },
+                    new SelectListItem { Text = "Aceptado", Value = "2" },
+                    new SelectListItem { Text = "Rechazado", Value = "3" }
+                }, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Pending, "Estado Pendiente")
+                @Html.DropDownListFor(model => model.Pending, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Si", Value = "true" },
+                    new SelectListItem { Text = "No", Value = "false" }
+                }, new { @class = "form-control" })
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        }
+
+
+    </div>
+
+</body>
+</html>

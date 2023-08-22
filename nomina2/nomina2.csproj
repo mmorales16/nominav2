@@ -258,6 +258,7 @@
     <Content Include="Views\Request\RequestListAdmin.cshtml" />
     <Content Include="Views\User\EditUserSingle.cshtml" />
     <Content Include="Views\PaymentResumen\ListPaymentResumen.cshtml" />
+    <Content Include="Views\Request\PendingRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

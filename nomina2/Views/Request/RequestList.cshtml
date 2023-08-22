@@ -24,7 +24,13 @@
         <h2>Solicitudes para el Usuario con ID: @ViewBag.UserId</h2>
 
 
-        <a href="@Url.Action("CreateRequest", "Request", new { userId = @ViewBag.userId })" class="btn btn-success">Create Request</a>
+        <a href="@Url.Action("CreateRequest", "Request", new { userId = @Session["UserId"] })" class="btn btn-success">CREAR SOLITUD</a>
+        
+        
+
+
+
+
         <div class="text-right">
             <form method="post">
                 <button type="submit" name="notificationButton" class="btn btn-info">Notification <span class="badge badge-light"></span></button>
@@ -42,14 +48,15 @@
         {
             <table class="table">
                 <thead>
-                  <tr>
-                      <th>ID de Solicitud</th>
-                      <th>ID de Usuario</th>
-                      <th>Tipo de Solicitud</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Nota</th>
-                  </tr>
+                    <tr>
+                        <th>ID de Solicitud</th>
+                        <th>ID de Usuario</th>
+                        <th>Tipo de Solicitud</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Nota</th>
+                        <th>Active</th>
+                    </tr>
                 </thead>
                 <tbody>
                     @foreach (var request in Model)
@@ -61,6 +68,24 @@
                             <td>@request.Start_date.ToString("yyyy-MM-dd")</td>
                             <td>@request.End_date.ToString("yyyy-MM-dd")</td>
                             <td>@request.Request_note</td>
+
+                            <td>
+                                @switch (@request.Active)
+                                {
+                                    case 1:
+                                        <span class="badge badge-primary">Pendiente</span>
+                                        break;
+                                    case 2:
+                                        <span class="badge badge-success">Aceptada</span>
+                                        break;
+                                    case 3:
+                                        <span class="badge badge-danger">Rechazada</span>
+                                        break;
+                                    default:
+                                        <span class="badge badge-secondary">Desconocida</span>
+                                        break;
+                                }
+                            </td>
                         </tr>
                     }
                 </tbody>

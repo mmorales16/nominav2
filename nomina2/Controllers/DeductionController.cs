@@ -37,6 +37,11 @@ namespace nomina2.Controllers
         }
 
 
+        public DeductionDAO GetDeductionRepository()
+        {
+            return deductionRepository;
+        }
+
 
         // POST: Deduction/Create
         [HttpPost]
@@ -131,10 +136,7 @@ namespace nomina2.Controllers
 
 
 
-        public DeductionDAO GetDeductionRepository()
-        {
-            return deductionRepository;
-        }
+
 
         public ActionResult DeleteDeduction(int id, int userId)
         {

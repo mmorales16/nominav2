@@ -21,10 +21,8 @@
 </head>
 <body>
     <div class="container">
-        <h2>Solicitudes para el Usuario con ID: @ViewBag.UserId</h2>
+        <h2>Solicitudes para el Usuario con ID: @ViewBag.UserId</h2>        
 
-
-        <a href="@Url.Action("CreateRequest", "Request", new { userId = @ViewBag.userId })" class="btn btn-success">Create Request</a>
         <div class="text-right">
             <form method="post">
                 <button type="submit" name="notificationButton" class="btn btn-info">Notification <span class="badge badge-light"></span></button>
@@ -38,6 +36,8 @@
             </div>
         }
 
+
+
         @if (Model != null && Model.Count > 0)
         {
             <table class="table">
@@ -49,6 +49,7 @@
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Nota</th>
+                        <th>Pending</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,6 +62,25 @@
                             <td>@request.Start_date.ToString("yyyy-MM-dd")</td>
                             <td>@request.End_date.ToString("yyyy-MM-dd")</td>
                             <td>@request.Request_note</td>
+                            <td>
+                                @switch (@request.Pending)
+                                {
+                                    case true:
+                                        <span class="badge badge-primary">Pending</span>
+                                        break;
+                                    case false:
+                                        <span class="badge badge-success">Not pending</span>
+                                        break;
+                                    default:
+                                        <span class="badge badge-secondary">Desconocida</span>
+                                        break;
+                                }
+                            </td>
+
+                            <td>
+                                <a href="@Url.Action("PendingRequest", "Request", new { userId = @Session["UserId"] })" class="btn btn-success">CREAR SOLITUD</a>
+                            </td>
+
                         </tr>
                     }
                 </tbody>
