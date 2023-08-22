@@ -38,10 +38,10 @@
                             </li>
 
                             <li>
-                                <a href="@Url.Action("EditUserSingle", "User", new { id = @Session["UserId"] })" class="btn btn-success">EDIT</a>
-                                <a href="@Url.Action("RequestList", "Request", new { id = @Session["UserId"] })" class="btn btn-danger">(-)</a>
-                                <a href="@Url.Action("RequestListAdmin", "Request", new { id = @Session["UserId"] })" class="btn btn-danger">(+)</a>
-                                <a href="@Url.Action("PendingRequest", "Request", new { id = @Session["UserId"] })" class="btn btn-success">CREAR SOLITUD</a>
+                                
+                                <a href="@Url.Action("RequestList", "Request", new { id = @Session["UserId"] })" class="btn btn-danger">Request List Usser</a>
+                                <a href="@Url.Action("RequestListAdmin", "Request", new { id = @Session["UserId"] })" class="btn btn-danger">Request List Admin</a>
+                                
                             </li>
 
 
