@@ -2,12 +2,11 @@
 
 @{
     ViewBag.Title = "RequestList";
-    bool showNotification = ViewBag.ShowNotification ?? false; // Obtiene el estado actual de la notificación
+    bool showNotification = ViewBag.ShowNotification ?? false;
 
     // Verifica si se hizo clic en el botón de notificaciones
     if (IsPost && Request.Form["notificationButton"] != null)
     {
-        // Cambia el estado de la notificación en cada clic
         showNotification = !showNotification;
         ViewBag.ShowNotification = showNotification;
     }
@@ -21,15 +20,9 @@
 </head>
 <body>
     <div class="container">
-        <h2>Solicitudes para el Usuario con ID: @ViewBag.UserId</h2>
+        <h2>Pending Request by User ID: @ViewBag.UserId</h2>
 
-
-        <a href="@Url.Action("CreateRequest", "Request", new { userId = @Session["UserId"] })" class="btn btn-success">CREAR SOLITUD</a>
-        
-        
-
-
-
+        <a href="@Url.Action("CreateRequest", "Request", new { userId = @Session["UserId"] })" class="btn btn-success">New Request</a>
 
         <div class="text-right">
             <form method="post">
@@ -39,23 +32,69 @@
 
         @if (showNotification)
         {
+            int pendingRequestsCount = 0;
+            int approvedRequestsCount = 0;
+            int rejectedRequestsCount = 0;
+
+            foreach (var request in Model)
+            {
+                if (request.Active == 1 && request.Pending)
+                {
+                    pendingRequestsCount++;
+                }
+                else if (request.Active == 2)
+                {
+                    approvedRequestsCount++;
+                }
+                else if (request.Active == 3)
+                {
+                    rejectedRequestsCount++;
+                }
+            }
+
             <div id="notification" class="alert alert-info">
-                Hola mundo <!--AQUI ESTÁ EL HOLA MUNDO-->
+                @if (pendingRequestsCount > 0)
+                {
+                    <p>You have @pendingRequestsCount pending request(s).</p>
+                }
+                else
+                {
+                     <p>You have no pending requests.</p>
+                }
+
+                @if (approvedRequestsCount > 0)
+                {
+                    <p>You have @approvedRequestsCount pending request(s).</p>
+                }
+                else
+                {
+                    <p>You have no approved applications.</p>
+                }
+
+                @if (rejectedRequestsCount > 0)
+                {
+                    <p>You have @rejectedRequestsCount pending request(s).</p>
+                }
+                else
+                {
+                     <p>You have no rejected applications.</p>
+                }
             </div>
         }
 
         @if (Model != null && Model.Count > 0)
         {
             <table class="table">
+                <!-- Encabezados de la tabla -->
                 <thead>
                     <tr>
-                        <th>ID de Solicitud</th>
-                        <th>ID de Usuario</th>
-                        <th>Tipo de Solicitud</th>
+                        <th>Request ID</th>
+                        <th>User ID</th>
+                        <th>Type Request</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Nota</th>
-                        <th>Active</th>
+                        <th>Description</th>
+                        <th>State</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,22 +107,22 @@
                             <td>@request.Start_date.ToString("yyyy-MM-dd")</td>
                             <td>@request.End_date.ToString("yyyy-MM-dd")</td>
                             <td>@request.Request_note</td>
-
                             <td>
-                                @switch (@request.Active)
+                                @if (request.Active == 1)
                                 {
-                                    case 1:
-                                        <span class="badge badge-primary">Pendiente</span>
-                                        break;
-                                    case 2:
-                                        <span class="badge badge-success">Aceptada</span>
-                                        break;
-                                    case 3:
-                                        <span class="badge badge-danger">Rechazada</span>
-                                        break;
-                                    default:
-                                        <span class="badge badge-secondary">Desconocida</span>
-                                        break;
+                                    <span class="badge badge-primary">Pending</span>
+                                }
+                                else if (request.Active == 2)
+                                {
+                                    <span class="badge badge-success">Approved</span>
+                                }
+                                else if (request.Active == 3)
+                                {
+                                    <span class="badge badge-danger">Rejected</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">Unknow</span>
                                 }
                             </td>
                         </tr>
@@ -101,7 +140,7 @@
     <script>
         $(document).ready(function () {
             $("#notification").on("click", function () {
-                $(this).hide(); // Ocultar la notificación al hacer clic en ella, ÓJO, NO AL BOTÓn SINO AL CUADRO AZUL
+                $(this).hide();
             });
         });
     </script>
