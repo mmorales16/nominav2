@@ -1,0 +1,31 @@
+﻿@model List<nomina2.Models.DTO.RecordDTO>
+
+@{
+    ViewBag.Title = "Historical";
+}
+
+<h2>Historical</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Request ID</th>
+        <th>Note</th>
+        <th>Type</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+    </tr>
+    @foreach (var record in Model)
+    {
+        <tr>
+            <td>@record.Id</td>
+            <td>@record.Request_id</td>
+            <td>@record.Request_note</td>
+            <td>@record.Type_request</td>
+            <td>@record.Start_date</td>
+            <td>@record.End_date</td>
+
+
+        </tr>
+    }
+</table>

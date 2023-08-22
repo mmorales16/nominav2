@@ -1,0 +1,36 @@
+﻿@model List<nomina2.Models.DTO.RecordDTO>
+
+@{
+    ViewBag.Title = "Calendar";
+}
+
+<h2>Calendar</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Request</th>
+            <th>User</th>
+            <th>Tipo de Solicitud</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model)
+        {
+            <tr>
+                <td>@record.Request_id</td>
+                <td>@record.Id</td>
+                <td>@record.Type_request</td>
+                <td>@record.Start_date.ToString("dd/MM/yyyy")</td>
+                <td>@record.End_date.ToString("dd/MM/yyyy")</td>
+
+                <td>
+                    <span class="badge badge-success">Aceptada</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
